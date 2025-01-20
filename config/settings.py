@@ -32,6 +32,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '8000-csmatthew-djangomapping-2y8pijehsdy.ws.codeinstitute-ide.net', 
     'localhost',
+    '.herokuapp.com',
     ]
 
 CSRF_TRUSTED_ORIGINS = [
