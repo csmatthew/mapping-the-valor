@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-STATUS = ((0, "Draft"), (1, "Published"), (2, "Pending Approval"))
+STATUS = ((0, "Draft"), (1, "Pending Approval"), (2, "Published"))
 
 class ReligiousOrder(models.Model):
     name = models.CharField(max_length=200, unique=True)
@@ -17,7 +17,7 @@ class Post(models.Model):
     county = models.CharField(max_length=200, default='Unknown')
     year_founded = models.IntegerField()
     content = models.TextField()
-    coordinates = models.CharField(max_length=50, null=True, blank=True)  # New field
+    coordinates = models.CharField(max_length=50, null=True, blank=True)  # Coordinates in '53.8202°N 2.4104°W' format
     created_by = models.ForeignKey(User, related_name='created_posts', on_delete=models.CASCADE)
     last_updated_by = models.ForeignKey(User, related_name='updated_posts', on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
