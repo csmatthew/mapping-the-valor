@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monasteries</title>
+</head>
+<body>
+    <h1>Monasteries</h1>
+    <ul>
+        {% for post in posts %}
+            <li>{{ post.name }} - {{ post.status }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
