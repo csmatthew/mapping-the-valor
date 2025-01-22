@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Django App{% endblock %}</title>
+    <title>{% block title %}Mapping the Valor{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -16,7 +16,14 @@
             <nav>
                 <ul class="nav">
                     <li class="nav-item"><a class="nav-link text-white" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="{% url 'create_post' %}">Create Post</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'create_post' %}">Create Post</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'view_drafts' %}">My Drafts</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'register' %}">Register</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
