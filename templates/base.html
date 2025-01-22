@@ -1,13 +1,20 @@
+{% load static %}
+
+{% url 'home' as home_url %}
+{% url 'about' as about_url %}
+{% url 'account_login' as login_url %}
+{% url 'account_signup' as register_url %}
+{% url 'account_logout' as logout_url %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Mapping the Valor{% endblock %}</title>
-    {% load static %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
 </head>
 <body>
     <header class="bg-primary text-white p-3">
@@ -19,19 +26,40 @@
                     {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link text-white" href="{% url 'create_post' %}">Create Post</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="{% url 'view_drafts' %}">My Drafts</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'logout' %}">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'account_logout' %}">Logout</a></li>
                     {% else %}
-                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'register' %}">Register</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'account_signup' %}">Register</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'account_login' %}">Login</a></li>
                     {% endif %}
                 </ul>
             </nav>
         </div>
     </header>
 
-    <main class="container mt-4">
+        <!-- displaying Django messages -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" id="msg" role="alert">
+                    {{ message | safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-shrink-0 main-bg">
+        {% if user.is_authenticated %}
+        <p class="text-end m-3">You are logged in as {{ user.username }}</p>
+        {% else %}
+        <p class="text-end m-3">You are not logged in</p>
+        {% endif %}
+
         {% block content %}
-        {% endblock %}
+        <!-- Content Goes here -->
+        {% endblock content %}
     </main>
 
     <footer class="bg-light text-center py-3 mt-4">
