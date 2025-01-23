@@ -164,3 +164,23 @@ body {
 .approval {
     color: rgb(222, 146, 168);
 }
+
+.map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000; /* Ensure the overlay is on top */
+}
+
+.map-overlay p {
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+}

@@ -41,4 +41,21 @@ document.addEventListener('DOMContentLoaded', function() {
         L.marker([lat, lng]).addTo(map)
             .bindPopup('<b>' + fields.name + '</b><br>' + fields.nearest_town);
     });
+
+    // Handle overlay click event
+    var mapOverlay = document.getElementById('map-overlay');
+    var mapOverlayText = document.getElementById('map-overlay-text');
+
+    // Detect if the device is a touch device
+    var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (isTouchDevice) {
+        mapOverlayText.textContent = 'Tap to activate map';
+    } else {
+        mapOverlayText.textContent = 'Click to activate map';
+    }
+
+    mapOverlay.addEventListener('click', function() {
+        mapOverlay.style.display = 'none';
+    });
 });
