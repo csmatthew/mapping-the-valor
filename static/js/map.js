@@ -1,22 +1,44 @@
-var map = L.map('map').setView([54.5, -3], 6); // Centered on Britain
+document.addEventListener('DOMContentLoaded', function() {
+    var map = L.map('map').setView([54.5, -3], 6); // Centered on Britain
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-        var monasteries = JSON.parse(document.getElementById('monasteries-data').textContent);
-        console.log(monasteries); // Debugging statement
-        monasteries.forEach(function(monastery) {
-            var fields = monastery.fields;
-            console.log(fields.coordinates); // Debugging statement
-            var coordinates = fields.coordinates.match(/([0-9.]+)°([NS])\s*([0-9.]+)°([EW])/);
-            if (coordinates) {
-                var lat = parseFloat(coordinates[1]) * (coordinates[2] === 'S' ? -1 : 1);
-                var lng = parseFloat(coordinates[3]) * (coordinates[4] === 'W' ? -1 : 1);
-                console.log(lat, lng); // Debugging statement
-                L.marker([lat, lng]).addTo(map)
-                    .bindPopup('<b>' + fields.name + '</b><br>' + fields.nearest_town);
+    var monasteries = JSON.parse(document.getElementById('monasteries-data').textContent);
+    monasteries.forEach(function(monastery) {
+        var fields = monastery.fields;
+        var coordinates = fields.coordinates;
+
+        var lat, lng;
+
+        // Match DMS format
+        var dmsMatch = coordinates.match(/([0-9.]+)°\s*([0-9.]+)′\s*([0-9.]+)″\s*([NS])\s*([0-9.]+)°\s*([0-9.]+)′\s*([0-9.]+)″\s*([EW])/);
+        if (dmsMatch) {
+            lat = parseFloat(dmsMatch[1]) + parseFloat(dmsMatch[2]) / 60 + parseFloat(dmsMatch[3]) / 3600;
+            lng = parseFloat(dmsMatch[5]) + parseFloat(dmsMatch[6]) / 60 + parseFloat(dmsMatch[7]) / 3600;
+            if (dmsMatch[4] === 'S') lat = -lat;
+            if (dmsMatch[8] === 'W') lng = -lng;
+        } else {
+            // Match Decimal format
+            var decimalMatch = coordinates.match(/([0-9.-]+),\s*([0-9.-]+)/);
+            if (decimalMatch) {
+                lat = parseFloat(decimalMatch[1]);
+                lng = parseFloat(decimalMatch[2]);
             } else {
-                console.error('Invalid coordinates format:', fields.coordinates); // Debugging statement
+                // Match original format
+                var originalMatch = coordinates.match(/([0-9.]+)°([NS])\s*([0-9.]+)°([EW])/);
+                if (originalMatch) {
+                    lat = parseFloat(originalMatch[1]) * (originalMatch[2] === 'S' ? -1 : 1);
+                    lng = parseFloat(originalMatch[3]) * (originalMatch[4] === 'W' ? -1 : 1);
+                } else {
+                    console.error('Invalid coordinates format:', coordinates);
+                    return;
+                }
             }
-        });
+        }
+
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup('<b>' + fields.name + '</b><br>' + fields.nearest_town);
+    });
+});

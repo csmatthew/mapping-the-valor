@@ -3,14 +3,32 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Post
 from django_summernote.widgets import SummernoteWidget
+import re
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['name', 'religious_order', 'nearest_town', 'county', 'year_founded', 'content', 'coordinates']
         widgets = {
+            'name': forms.TextInput(attrs={'title': 'This field is required'}),
+            'religious_order': forms.Select(attrs={'title': 'This field is required'}),
+            'nearest_town': forms.TextInput(attrs={'title': 'This field is required'}),
+            'county': forms.TextInput(attrs={'title': 'This field is required'}),
+            'year_founded': forms.NumberInput(attrs={'title': 'This field is required'}),
             'content': SummernoteWidget(),
+            'coordinates': forms.TextInput(attrs={'title': 'This field is optional'}),
         }
+
+    def clean_coordinates(self):
+        coordinates = self.cleaned_data.get('coordinates')
+        dms_pattern = re.compile(r'([0-9.]+)°\s*([0-9.]+)′\s*([0-9.]+)″\s*([NS]),\s*([0-9.]+)°\s*([0-9.]+)′\s*([0-9.]+)″\s*([EW])')
+        decimal_pattern = re.compile(r'([0-9.-]+),\s*([0-9.-]+)')
+        original_pattern = re.compile(r'([0-9.]+)°([NS])\s*([0-9.]+)°([EW])')
+
+        if not (dms_pattern.match(coordinates) or decimal_pattern.match(coordinates) or original_pattern.match(coordinates)):
+            raise forms.ValidationError('Invalid coordinates format. Accepted formats: DMS (ex. 50° 39′ 52.1″ N, 2° 35′ 55.4″ W), Decimal (ex. 50.664472, -2.598722), or Original format.')
+
+        return coordinates
 
 class PostSubmitForm(forms.ModelForm):
     class Meta:

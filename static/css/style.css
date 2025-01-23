@@ -57,6 +57,11 @@ body {
     text-transform: uppercase;
 }
 
+.form-group label span {
+    color: red;
+    font-weight: bold;
+}
+
 .masthead {
     margin-top: 10px;
     overflow: hidden;

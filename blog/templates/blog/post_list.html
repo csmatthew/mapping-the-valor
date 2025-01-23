@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Monasteries</title>
-</head>
-<body>
-    <h1>Monasteries</h1>
+{% extends 'base.html' %}
+
+{% block title %}Post List{% endblock %}
+
+{% block content %}
+    <h1>Post List</h1>
     <ul>
         {% for post in posts %}
-            <li>{{ post.name }} - {{ post.status }}</li>
+            <li>{{ post.name }}</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}

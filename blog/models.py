@@ -16,10 +16,10 @@ class Post(models.Model):
     nearest_town = models.CharField(max_length=200, default='Unknown')
     county = models.CharField(max_length=200, default='Unknown')
     year_founded = models.IntegerField()
-    content = models.TextField()
+    content = models.TextField(blank=True)
     coordinates = models.CharField(max_length=50, null=True, blank=True)  # Coordinates in '53.8202°N 2.4104°W' format
-    created_by = models.ForeignKey(User, related_name='created_posts', on_delete=models.CASCADE)
-    last_updated_by = models.ForeignKey(User, related_name='updated_posts', on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, related_name='created_posts', on_delete=models.CASCADE, null=True, blank=True)
+    last_updated_by = models.ForeignKey(User, related_name='updated_posts', on_delete=models.CASCADE, null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=STATUS, default=0)
