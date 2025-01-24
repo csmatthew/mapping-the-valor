@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, ReligiousOrder
+from .models import Post, ReligiousOrder, HouseType
 from django_summernote.admin import SummernoteModelAdmin
 
 @admin.action(description='Mark selected posts as published')
@@ -13,3 +13,4 @@ class PostAdmin(SummernoteModelAdmin):  # Use SummernoteModelAdmin
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(ReligiousOrder)
+admin.site.register(HouseType)
