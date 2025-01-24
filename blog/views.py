@@ -5,6 +5,8 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 import json
 from .forms import PostForm
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 def monasteries_map(request):
     monasteries = Post.objects.filter(status=2)  # Filter for published posts
@@ -12,8 +14,24 @@ def monasteries_map(request):
     return render(request, 'blog/index.html', {'monasteries': monasteries_json})
 
 def post_list(request):
+    query = request.GET.get('q')
     posts = Post.objects.filter(status=2)  # Filter for published posts
-    return render(request, 'blog/post_list.html', {'posts': posts})
+
+    if query:
+        posts = posts.filter(
+            Q(name__icontains=query) |
+            Q(religious_order__name__icontains=query) |
+            Q(house_type__name__icontains=query) |
+            Q(nearest_town__icontains=query) |
+            Q(county__icontains=query) |
+            Q(content__icontains=query)
+        )
+
+    paginator = Paginator(posts, 10)  # Show 10 posts per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'blog/post_list.html', {'page_obj': page_obj, 'query': query})
 
 def create_post(request):
     if request.method == 'POST':

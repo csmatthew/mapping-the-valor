@@ -5,6 +5,7 @@
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as register_url %}
 {% url 'account_logout' as logout_url %}
+{% url 'post_list' as post_list_url %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +24,7 @@
             <nav>
                 <ul class="nav">
                     <li class="nav-item"><a class="nav-link text-white" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{% url 'post_list' %}">Posts</a></li>
                     {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link text-white" href="{% url 'create_post' %}">Create Post</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="{% url 'view_drafts' %}">My Drafts</a></li>
@@ -36,7 +38,7 @@
         </div>
     </header>
 
-        <!-- displaying Django messages -->
+    <!-- displaying Django messages -->
     <div class="container">
         <div class="row">
             <div class="col-md-8 offset-md-2">
