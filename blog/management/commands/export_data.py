@@ -8,7 +8,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         with open('posts.csv', 'w', newline='') as csvfile:
-            fieldnames = ['name', 'religious_order', 'nearest_town', 'county', 'year_founded', 'content', 'coordinates']
+            fieldnames = ['name', 'religious_order', 'house_type', 'nearest_town', 'county', 'year_founded', 'content', 'coordinates']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
             writer.writeheader()
@@ -16,6 +16,7 @@ class Command(BaseCommand):
                 writer.writerow({
                     'name': post.name,
                     'religious_order': post.religious_order.name if post.religious_order else '',
+                    'house_type': post.house_type.name if post.house_type else '',
                     'nearest_town': post.nearest_town,
                     'county': post.county,
                     'year_founded': post.year_founded,
