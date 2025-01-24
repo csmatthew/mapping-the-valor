@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
-
-{% block title %}Monasteries Map{% endblock %}
+{% load static %}
 
 {% block content %}
-    <h1 class="mb-4">Monasteries Map</h1>
     <div id="map" style="height: 600px; width: 100%;" class="mb-4"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
