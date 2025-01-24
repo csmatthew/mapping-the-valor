@@ -38,7 +38,8 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            slug_base = f"{self.name}-{self.house_type.name}" if self.house_type else self.name
+            self.slug = slugify(slug_base)
         super().save(*args, **kwargs)
 
     def __str__(self):
