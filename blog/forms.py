@@ -12,6 +12,7 @@ class PostForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'title': 'This field is required'}),
             'religious_order': forms.Select(attrs={'title': 'This field is required'}),
+            'other_religious_order': forms.TextInput(attrs={'title': 'This field is optional'}),
             'nearest_town': forms.TextInput(attrs={'title': 'This field is required'}),
             'county': forms.TextInput(attrs={'title': 'This field is required'}),
             'year_founded': forms.NumberInput(attrs={'title': 'This field is required'}),
