@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ post.name }}</h1>
+    <p><strong>Religious Order:</strong> {{ post.religious_order }}</p>
+    <p><strong>House Type:</strong> {{ post.house_type }}</p>
+    <p><strong>Nearest Town:</strong> {{ post.nearest_town }}</p>
+    <p><strong>County:</strong> {{ post.county }}</p>
+    <p><strong>Year Founded:</strong> {{ post.year_founded }}</p>
+    <p><strong>Content:</strong> {{ post.content }}</p>
+    <p><strong>Coordinates:</strong> {{ post.coordinates }}</p>
+{% endblock %}

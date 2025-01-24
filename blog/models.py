@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 
 STATUS = ((0, "Draft"), (1, "Pending Approval"), (2, "Published"))
@@ -21,6 +22,7 @@ class HouseType(models.Model):
 class Post(models.Model):
     monastery_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
     religious_order = models.ForeignKey(ReligiousOrder, on_delete=models.SET_NULL, null=True, blank=True)
     house_type = models.ForeignKey(HouseType, on_delete=models.SET_NULL, null=True, blank=True)
     nearest_town = models.CharField(max_length=200, default='Unknown')
@@ -33,6 +35,11 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=STATUS, default=0)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

@@ -45,3 +45,7 @@ def update_post(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/update_post.html', {'form': form})
+
+def post_detail(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    return render(request, 'blog/post_detail.html', {'post': post})

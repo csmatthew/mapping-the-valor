@@ -11,6 +11,9 @@
             <p id="map-overlay-text">Click to activate map</p>
         </div>
     </div>
+    {% if post.slug %}
+        <a href="{% url 'post_detail' post.slug %}" class="post-link"></a>
+    {% endif %}
     <script id="monasteries-data" type="application/json">
         {{ monasteries|safe }}
     </script>
