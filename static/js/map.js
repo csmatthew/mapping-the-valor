@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var map = L.map('map').setView([54.5, -3], 6); // Centered on Britain
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }).addTo(map);
 
     var monasteries = JSON.parse(document.getElementById('monasteries-data').textContent);
-    monasteries.forEach(function(monastery) {
+    monasteries.forEach(function (monastery) {
         var fields = monastery.fields;
         var coordinates = fields.coordinates;
 
@@ -38,8 +38,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        var name = fields.name;
+        if (fields.house_type) {
+            name += ' ' + fields.house_type;
+        }
+
+        var popupContent = '<b>' + name + '</b><br>' + fields.nearest_town + '<br>' +
+            '<a href="/' + fields.slug + '">View Details</a>';
+
         L.marker([lat, lng]).addTo(map)
-            .bindPopup('<b>' + fields.name + ' ' + fields.house_type + '</b><br>' + fields.nearest_town);
+            .bindPopup(popupContent);
     });
 
     // Handle overlay click event
@@ -55,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
         mapOverlayText.textContent = 'Click to activate map';
     }
 
-    mapOverlay.addEventListener('click', function() {
+    mapOverlay.addEventListener('click', function () {
         mapOverlay.style.display = 'none';
     });
 });
