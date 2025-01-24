@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         L.marker([lat, lng]).addTo(map)
-            .bindPopup('<b>' + fields.name + '</b><br>' + fields.nearest_town);
+            .bindPopup('<b>' + fields.name + ' ' + fields.house_type + '</b><br>' + fields.nearest_town);
     });
 
     // Handle overlay click event

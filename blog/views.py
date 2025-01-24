@@ -8,10 +8,7 @@ from .forms import PostForm
 
 def monasteries_map(request):
     monasteries = Post.objects.filter(status=2)  # Filter for published posts
-    if monasteries.exists():
-        latest_monastery = monasteries.latest('created_on')
-        print(latest_monastery)  # Debugging: Print the latest post to the console
-    monasteries_json = serialize('json', monasteries)
+    monasteries_json = serialize('json', monasteries, use_natural_foreign_keys=True)
     return render(request, 'blog/index.html', {'monasteries': monasteries_json})
 
 def post_list(request):

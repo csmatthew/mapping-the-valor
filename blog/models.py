@@ -14,6 +14,9 @@ class HouseType(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def natural_key(self):
+        return self.name
 
 class Post(models.Model):
     monastery_id = models.AutoField(primary_key=True)
@@ -33,3 +36,6 @@ class Post(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def natural_key(self):
+        return (self.name, self.house_type.natural_key())
