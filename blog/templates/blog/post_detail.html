@@ -4,7 +4,11 @@
 {% block title %}{{ post.name }}{% endblock %}
 
 {% block content %}
-    <h1>{{ post.name }}</h1>
+    <h1>{{ post.name }}
+        {% if post.house_type %} 
+        {{ post.house_type }}
+        {% endif %}
+    </h1>
     {% if post.image_url %}
         <img src="{{ post.image_url }}" alt="{{ post.name }}">
     {% endif %}
