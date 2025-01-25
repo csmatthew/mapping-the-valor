@@ -4,7 +4,7 @@ from django.core.serializers import serialize
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 import json
-from .forms import PostForm
+from .forms import PostForm, HoldingForm
 from django.core.paginator import Paginator
 from django.db.models import Q
 
@@ -67,3 +67,16 @@ def update_post(request, pk):
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
     return render(request, 'blog/post_detail.html', {'post': post})
+
+def add_holding(request, monastery_id):
+    monastery = Post.objects.get(pk=monastery_id)
+    if request.method == 'POST':
+        form = HoldingForm(request.POST)
+        if form.is_valid():
+            holding = form.save(commit=False)
+            holding.monastery = monastery
+            holding.save()
+            return redirect('post_detail', slug=monastery.slug)
+    else:
+        form = HoldingForm()
+    return render(request, 'blog/add_holding.html', {'form': form, 'monastery': monastery})

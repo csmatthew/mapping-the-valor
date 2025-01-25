@@ -8,4 +8,5 @@ urlpatterns = [
     path('drafts/', views.view_drafts, name='view_drafts'),
     path('post/<int:pk>/edit/', views.update_post, name='update_post'),
     path('<slug:slug>/', views.post_detail, name='post_detail'),
+    path('add_holding/<int:monastery_id>/', views.add_holding, name='add_holding'),  # Add this line
 ]

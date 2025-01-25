@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Add Holding{% endblock %}
+
+{% block content %}
+    <h1>Add Holding for {{ monastery.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-group">
+            <label for="id_location_or_coordinates">Location or Coordinates</label>
+            <input type="text" id="id_location_or_coordinates" name="location_or_coordinates" class="form-control">
+        </div>
+        <button type="submit">Add Holding</button>
+    </form>
+{% endblock %}

@@ -202,3 +202,17 @@
     background-color: #f8f9fa;
     color: #000;
 }
+
+.list-group-item {
+    cursor: pointer;
+}
+
+#location-suggestions {
+    position: absolute;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+}

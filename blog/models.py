@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+import requests
 
 STATUS = ((0, "Draft"), (1, "Pending Approval"), (2, "Published"))
 
@@ -48,3 +49,28 @@ class Post(models.Model):
     
     def natural_key(self):
         return (self.name, self.house_type.natural_key())
+
+class Holding(models.Model):
+    monastery = models.ForeignKey(Post, related_name='holdings', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    location = models.CharField(max_length=200)
+    value_pounds = models.IntegerField(default=0)
+    value_shillings = models.IntegerField(default=0)
+    value_pence = models.IntegerField(default=0)
+    coordinates = models.CharField(max_length=100, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.location and not self.coordinates:
+            self.coordinates = self.get_coordinates(self.location)
+        super().save(*args, **kwargs)
+
+    def get_coordinates(self, location):
+        url = f"https://nominatim.openstreetmap.org/search?q={location}&format=json&limit=1"
+        response = requests.get(url)
+        data = response.json()
+        if data:
+            return f"{data[0]['lat']}, {data[0]['lon']}"
+        return None
+
+    def __str__(self):
+        return f"{self.name} ({self.monastery.name})"
