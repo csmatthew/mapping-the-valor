@@ -5,6 +5,9 @@
 
 {% block content %}
     <h1>{{ post.name }}</h1>
+    {% if post.image_url %}
+        <img src="{{ post.image_url }}" alt="{{ post.name }}">
+    {% endif %}
     <p><strong>Religious Order:</strong> {{ post.religious_order }}</p>
     <p><strong>House Type:</strong> {{ post.house_type }}</p>
     <p><strong>Nearest Town:</strong> {{ post.nearest_town }}</p>

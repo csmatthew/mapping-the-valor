@@ -35,6 +35,7 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=STATUS, default=0)
+    image_url = models.URLField(max_length=500, blank=True, null=True)  # For images from wikipedia
 
     def save(self, *args, **kwargs):
         if not self.slug:
