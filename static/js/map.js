@@ -44,10 +44,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         var popupContent = '<b>' + name + '</b><br>' + fields.nearest_town + '<br>' +
-            '<a href="/' + fields.slug + '">View Details</a>';
+            '<a href="/' + fields.slug + '">View Details</a><br>' +
+            '<a href="/valor-holdings/' + fields.slug + '">View Valor Holdings</a>';
 
-        L.marker([lat, lng]).addTo(map)
+        var marker = L.marker([lat, lng]).addTo(map)
             .bindPopup(popupContent);
+
+        marker.on('click', function() {
+            map.flyTo([lat, lng], 15, {
+                animate: true,
+                duration: 2 // Duration in seconds
+            }); // Zoom in to the marker location with a smooth transition
+            showDropdownMenu(lat, lng); // Show the dropdown menu
+        });
     });
 
     // Handle overlay click event
@@ -66,4 +75,12 @@ document.addEventListener('DOMContentLoaded', function () {
     mapOverlay.addEventListener('click', function () {
         mapOverlay.style.display = 'none';
     });
+
+    function showDropdownMenu(lat, lng) {
+        var dropdown = document.getElementById('dropdown-menu');
+        dropdown.style.display = 'block';
+        dropdown.style.position = 'absolute';
+        dropdown.style.left = map.latLngToContainerPoint([lat, lng]).x + 'px';
+        dropdown.style.top = map.latLngToContainerPoint([lat, lng]).y + 'px';
+    }
 });
