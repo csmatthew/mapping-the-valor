@@ -24,7 +24,6 @@ class Post(models.Model):
     monastery_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
-    religious_order = models.ForeignKey(ReligiousOrder, on_delete=models.SET_NULL, null=True, blank=True)
     house_type = models.ForeignKey(HouseType, on_delete=models.SET_NULL, null=True, blank=True)
     county = models.CharField(max_length=200, default='Unknown')
     year_founded = models.IntegerField()
@@ -48,7 +47,6 @@ class Post(models.Model):
                 defaults={
                     'name': self.name,
                     'slug': self.slug,
-                    'religious_order': self.religious_order,
                     'house_type': self.house_type,
                     'county': self.county,
                     'year_founded': self.year_founded,
@@ -68,7 +66,6 @@ class ApprovedPost(models.Model):
     post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='approved_version')
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
-    religious_order = models.ForeignKey(ReligiousOrder, on_delete=models.SET_NULL, null=True, blank=True)
     house_type = models.ForeignKey(HouseType, on_delete=models.SET_NULL, null=True, blank=True)
     county = models.CharField(max_length=200, default='Unknown')
     year_founded = models.IntegerField()

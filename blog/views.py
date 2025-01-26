@@ -15,38 +15,8 @@ def monasteries_map(request):
     monasteries_json = serialize('json', approved_posts, use_natural_foreign_keys=True)
     return render(request, 'blog/index.html', {'monasteries': monasteries_json})
 
-def post_list(request):
-    query = request.GET.get('q')
-    posts = Post.objects.filter(status=2)  
-
-    if query:
-        posts = posts.filter(
-            Q(name__icontains=query) |
-            Q(religious_order__name__icontains=query) |
-            Q(house_type__name__icontains=query) |
-            Q(county__icontains=query) |
-            Q(content__icontains=query)
-        )
-
-    paginator = Paginator(posts, 10)  # Show 10 posts per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, 'blog/post_list.html', {'page_obj': page_obj, 'query': query})
-
 # Post editing capabilities
-def create_post(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.created_by = request.user
-            post.last_updated_by = request.user
-            post.save()
-            return redirect('post_list')
-    else:
-        form = PostForm()
-    return render(request, 'blog/create_post.html', {'form': form})
+
 
 @login_required
 def submit_for_approval(request, pk):
@@ -66,32 +36,6 @@ def approve_post(request, pk):
 
 # login views
 @login_required
-def view_drafts(request):
-    drafts = Post.objects.filter(created_by=request.user, status=0)  # Filter drafts by the logged-in user
-    return render(request, 'blog/view_drafts.html', {'drafts': drafts})
-
-@login_required
-def update_post(request, slug):
-    post = get_object_or_404(Post, slug=slug)
-    if request.method == 'POST':
-        post_form = PostForm(request.POST, instance=post)
-        if 'save_draft' in request.POST and post_form.is_valid():
-            post = post_form.save(commit=False)
-            post.last_updated_by = request.user
-            if not request.user.is_staff:
-                post.status = 0  # Save as draft for non-admin users
-            post.save()
-            return redirect('post_detail', slug=post.slug)
-        elif 'submit_approval' in request.POST and post_form.is_valid():
-            post = post_form.save(commit=False)
-            post.last_updated_by = request.user
-            post.status = 1  # Set status to pending approval
-            post.save()
-            return redirect('post_detail', slug=post.slug)
-    else:
-        post_form = PostForm(instance=post)
-    return render(request, 'blog/update_post.html', {'post_form': post_form, 'post': post})
-
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
     return render(request, 'blog/post_detail.html', {'post': post})
