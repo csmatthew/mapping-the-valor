@@ -26,7 +26,6 @@ class Post(models.Model):
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
     religious_order = models.ForeignKey(ReligiousOrder, on_delete=models.SET_NULL, null=True, blank=True)
     house_type = models.ForeignKey(HouseType, on_delete=models.SET_NULL, null=True, blank=True)
-    nearest_town = models.CharField(max_length=200, blank=True, null=True)
     county = models.CharField(max_length=200, default='Unknown')
     year_founded = models.IntegerField()
     content = models.TextField(blank=True)
@@ -51,7 +50,6 @@ class Post(models.Model):
                     'slug': self.slug,
                     'religious_order': self.religious_order,
                     'house_type': self.house_type,
-                    'nearest_town': self.nearest_town,
                     'county': self.county,
                     'year_founded': self.year_founded,
                     'content': self.content,
@@ -72,7 +70,6 @@ class ApprovedPost(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     religious_order = models.ForeignKey(ReligiousOrder, on_delete=models.SET_NULL, null=True, blank=True)
     house_type = models.ForeignKey(HouseType, on_delete=models.SET_NULL, null=True, blank=True)
-    nearest_town = models.CharField(max_length=200, blank=True, null=True)
     county = models.CharField(max_length=200, default='Unknown')
     year_founded = models.IntegerField()
     content = models.TextField(blank=True)

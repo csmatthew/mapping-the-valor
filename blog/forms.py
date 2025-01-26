@@ -9,12 +9,11 @@ import requests
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['name', 'religious_order', 'nearest_town', 'county', 'year_founded', 'content', 'coordinates']
+        fields = ['name', 'religious_order', 'county', 'year_founded', 'content', 'coordinates']
         widgets = {
             'name': forms.TextInput(attrs={'title': 'This field is required'}),
             'religious_order': forms.Select(attrs={'title': 'This field is required'}),
             'other_religious_order': forms.TextInput(attrs={'title': 'This field is optional'}),
-            'nearest_town': forms.TextInput(attrs={'title': 'This field is required'}),
             'county': forms.TextInput(attrs={'title': 'This field is required'}),
             'year_founded': forms.NumberInput(attrs={'title': 'This field is required'}),
             'content': forms.Textarea(attrs={'title': 'This field is required'}),

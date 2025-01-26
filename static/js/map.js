@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 name += ' ' + fields.house_type;
             }
 
-            var popupContent = '<b>' + name + '</b><br>' + fields.nearest_town + '<br>' +
-                '<a href="/' + fields.slug + '">View Details"</a><br>';
+            var popupContent = '<b>' + name + '</b><br>' + fields.county + '<br>' +
+                '<a href="/' + fields.slug + '">View Details</a><br>';
 
             var marker = L.marker([lat, lng]).addTo(map)
                 .bindPopup(popupContent);

@@ -24,7 +24,6 @@ def post_list(request):
             Q(name__icontains=query) |
             Q(religious_order__name__icontains=query) |
             Q(house_type__name__icontains=query) |
-            Q(nearest_town__icontains=query) |
             Q(county__icontains=query) |
             Q(content__icontains=query)
         )
