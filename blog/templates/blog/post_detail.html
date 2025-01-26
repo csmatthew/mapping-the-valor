@@ -22,13 +22,12 @@
                     <p class="card-text"><strong>Coordinates:</strong> {{ post.coordinates }}</p>
                 </div>
             </div>
-            {% if post.status != 2 %}
-                <p>This is the last approved version of the post.</p>
-            {% endif %}
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Content</h5>
-                    <p class="card-text">{{ post.content }}</p>
+                    {% if post.status == 2 %}
+                        <p class="card-text">{{ post.content }}</p>
+                    {% endif %}
                 </div>
             </div>
             <div class="card mb-4">
