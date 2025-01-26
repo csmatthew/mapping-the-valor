@@ -4,12 +4,6 @@ from django.contrib.auth.models import User
 import requests
 
 STATUS = ((0, "Draft"), (1, "Pending Approval"), (2, "Published"))
-
-class ReligiousOrder(models.Model):
-    name = models.CharField(max_length=200, unique=True)
-
-    def __str__(self):
-        return self.name
     
 class HouseType(models.Model):
     name = models.CharField(max_length=200, unique=True)
