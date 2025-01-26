@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
 import requests
 
 STATUS = ((0, "Draft"), (1, "Pending Approval"), (2, "Published"))
