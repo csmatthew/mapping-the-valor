@@ -54,6 +54,14 @@ class HoldingForm(forms.ModelForm):
         model = Holding
         fields = ['name', 'monastery', 'location_or_coordinates', 'value_pounds', 'value_shillings', 'value_pence']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['monastery'].queryset = Post.objects.all()
+        self.fields['monastery'].label_from_instance = self.label_from_instance
+
+    def label_from_instance(self, obj):
+        return f"{obj.name} {obj.house_type.name if obj.house_type else ''}"
+    
     def clean_location_or_coordinates(self):
         input_value = self.cleaned_data['location_or_coordinates']
         dms_pattern = re.compile(r'([0-9.]+)°\s*([0-9.]+)′\s*([0-9.]+)″\s*([NS]),\s*([0-9.]+)°\s*([0-9.]+)′\s*([0-9.]+)″\s*([EW])')
