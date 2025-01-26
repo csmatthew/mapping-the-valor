@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Post, ApprovedPost
+from .models import Post, ApprovedPost, Holding
 from django.core.serializers import serialize
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -75,17 +75,30 @@ def view_drafts(request):
 def update_post(request, slug):
     post = get_object_or_404(Post, slug=slug)
     if request.method == 'POST':
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
+        post_form = PostForm(request.POST, instance=post)
+        holding_form = HoldingForm(request.POST)
+        if 'save_draft' in request.POST and post_form.is_valid():
+            post = post_form.save(commit=False)
             post.last_updated_by = request.user
             if not request.user.is_staff:
                 post.status = 0  # Save as draft for non-admin users
             post.save()
             return redirect('post_detail', slug=post.slug)
+        elif 'submit_approval' in request.POST and post_form.is_valid():
+            post = post_form.save(commit=False)
+            post.last_updated_by = request.user
+            post.status = 1  # Set status to pending approval
+            post.save()
+            return redirect('post_detail', slug=post.slug)
+        elif 'add_holding' in request.POST and holding_form.is_valid():
+            holding = holding_form.save(commit=False)
+            holding.monastery = post
+            holding.save()
+            return redirect('post_detail', slug=post.slug)
     else:
-        form = PostForm(instance=post)
-    return render(request, 'blog/update_post.html', {'form': form, 'post': post})
+        post_form = PostForm(instance=post)
+        holding_form = HoldingForm()
+    return render(request, 'blog/update_post.html', {'post_form': post_form, 'holding_form': holding_form, 'post': post})
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
@@ -93,8 +106,9 @@ def post_detail(request, slug):
         post = post.approved_version
     return render(request, 'blog/post_detail.html', {'post': post})
 
+@login_required
 def add_holding(request, monastery_id):
-    monastery = Post.objects.get(pk=monastery_id)
+    monastery = get_object_or_404(Post, pk=monastery_id)
     if request.method == 'POST':
         form = HoldingForm(request.POST)
         if form.is_valid():
@@ -111,4 +125,6 @@ def account_logout(request):
     logout(request)
     messages.add_message(request, messages.INFO, 'You have signed out.', extra_tags='logout')
     return redirect('home')
+
+
 

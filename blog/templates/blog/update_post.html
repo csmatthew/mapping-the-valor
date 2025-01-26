@@ -10,9 +10,19 @@
             <h1 class="mb-4">Edit Post</h1>
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ post_form.as_p }}
                 <button type="submit" name="action" value="save_draft" class="btn btn-primary">Save as Draft</button>
                 <button type="submit" name="action" value="submit_approval" class="btn btn-warning">Submit for Approval</button>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">Add Holding for {{ post.name }}</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ holding_form.as_p }}
+                <button type="submit" name="action" value="add_holding" class="btn btn-primary">Add Holding</button>
             </form>
         </div>
     </div>
