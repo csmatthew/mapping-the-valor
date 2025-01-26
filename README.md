@@ -1,6 +1,6 @@
 # Mapping the Valor
 
-[View live project here on GitHub]()
+[View live project here on Heroku](https://mapping-the-valor-a17b7cc98edf.herokuapp.com/)
 
 <br>
 
