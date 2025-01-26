@@ -1,4 +1,3 @@
-// For drop down list of monastic order selection
 document.addEventListener('DOMContentLoaded', function() {
     const religiousOrderSelect = document.getElementById('id_religious_order');
     const otherReligiousOrderField = document.getElementById('id_other_religious_order');
@@ -12,5 +11,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     religiousOrderSelect.addEventListener('change', toggleOtherField);
-        toggleOtherField();  // Initial call to set the correct state
-    });
+    toggleOtherField();  // Initial call to set the correct state
+});

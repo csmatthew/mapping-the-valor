@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post
 from django.core.serializers import serialize
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 import json
 from .forms import PostForm, HoldingForm
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib import messages
 
 def monasteries_map(request):
     monasteries = Post.objects.filter(status=2)  # Filter for published posts
@@ -80,3 +81,8 @@ def add_holding(request, monastery_id):
     else:
         form = HoldingForm()
     return render(request, 'blog/add_holding.html', {'form': form, 'monastery': monastery})
+
+def account_logout(request):
+    logout(request)
+    messages.add_message(request, messages.INFO, 'You have signed out.', extra_tags='logout')
+    return redirect('home')
