@@ -1,22 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Post
+from .models import Post, ApprovedPost
 from django.core.serializers import serialize
 from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 import json
 from .forms import PostForm, HoldingForm
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib import messages
 
+# Visual
 def monasteries_map(request):
-    monasteries = Post.objects.filter(status=2)  # Filter for published posts
-    monasteries_json = serialize('json', monasteries, use_natural_foreign_keys=True)
+    approved_posts = Post.objects.filter(status=2)
+    monasteries_json = serialize('json', approved_posts, use_natural_foreign_keys=True)
     return render(request, 'blog/index.html', {'monasteries': monasteries_json})
 
 def post_list(request):
     query = request.GET.get('q')
-    posts = Post.objects.filter(status=2)  # Filter for published posts
+    posts = Post.objects.filter(status=2)  
 
     if query:
         posts = posts.filter(
@@ -34,6 +35,7 @@ def post_list(request):
 
     return render(request, 'blog/post_list.html', {'page_obj': page_obj, 'query': query})
 
+# Post editing capabilities
 def create_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -48,25 +50,47 @@ def create_post(request):
     return render(request, 'blog/create_post.html', {'form': form})
 
 @login_required
+def submit_for_approval(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.user == post.created_by:
+        post.status = 1  # Set status to pending approval
+        post.save()
+    return redirect('post_detail', slug=post.slug)
+
+@user_passes_test(lambda u: u.is_staff)
+def approve_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.status = 2  # Set status to published
+    post.save()
+    return redirect('post_detail', slug=post.slug)
+
+
+# login views
+@login_required
 def view_drafts(request):
     drafts = Post.objects.filter(created_by=request.user, status=0)  # Filter drafts by the logged-in user
     return render(request, 'blog/view_drafts.html', {'drafts': drafts})
 
-def update_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+@login_required
+def update_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.last_updated_by = request.user
+            if not request.user.is_staff:
+                post.status = 0  # Save as draft for non-admin users
             post.save()
-            return redirect('post_detail', pk=post.pk)
+            return redirect('post_detail', slug=post.slug)
     else:
         form = PostForm(instance=post)
-    return render(request, 'blog/update_post.html', {'form': form})
+    return render(request, 'blog/update_post.html', {'form': form, 'post': post})
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
+    if post.status != 2:  # If the post is not approved
+        post = post.approved_version
     return render(request, 'blog/post_detail.html', {'post': post})
 
 def add_holding(request, monastery_id):
@@ -82,7 +106,9 @@ def add_holding(request, monastery_id):
         form = HoldingForm()
     return render(request, 'blog/add_holding.html', {'form': form, 'monastery': monastery})
 
+# Login/Logout
 def account_logout(request):
     logout(request)
     messages.add_message(request, messages.INFO, 'You have signed out.', extra_tags='logout')
     return redirect('home')
+
