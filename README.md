@@ -44,4 +44,51 @@ Remaining untranslated from its 16th century Latin, and printed in the 19th cent
 ## User Experience
 
 
+## Technology Used
+
+#### Languages, Frameworks, Editors & Version Control:
+
+* HTML, CSS, JS & Python
+* Django
+* Bootstrap
+* Leaflet.js
+* Github
+* Heroku
+
+<p align="right"><a href="#mapping-the-valor">Back To Top</a></p>
+
+#### Tools Used
+
+* PostgreSQL
+* WhiteNoise
+* Google Chrome Dev Tools
+* (Balsamiq)
+* FontAwesome
+* (Google Fonts)
+* Google Sheets
+* 
+<p align="right"><a href="#mapping-the-valor">Back To Top</a></p>
+
+## Database
+
+#### Database Schema
+
+## Features
+
+#### Future Features
+
+## Testing
+
+#### Found Bugs & Fixes
+
+## Deployment
+
+## Credits
+
+
+
+
+
+
+
 
