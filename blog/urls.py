@@ -10,5 +10,4 @@ urlpatterns = [
     path('post/<int:pk>/submit/', views.submit_for_approval, name='submit_for_approval'),
     path('post/<int:pk>/approve/', views.approve_post, name='approve_post'),
     path('<slug:slug>/', views.post_detail, name='post_detail'),
-    path('monastery/<int:monastery_id>/add_holding/', views.add_holding, name='add_holding'), 
 ]

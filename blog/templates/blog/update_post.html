@@ -16,15 +16,5 @@
             </form>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-md-8 offset-md-2">
-            <h1 class="mb-4">Add Holding for {{ post.name }}</h1>
-            <form method="post">
-                {% csrf_token %}
-                {{ holding_form.as_p }}
-                <button type="submit" name="action" value="add_holding" class="btn btn-primary">Add Holding</button>
-            </form>
-        </div>
-    </div>
 </div>
 {% endblock %}
