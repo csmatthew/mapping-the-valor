@@ -65,6 +65,13 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <!-- Form to add new financial details -->
+                            <h5 class="card-title">Add New Valor Detail</h5>
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit" class="btn btn-primary">Add Detail</button>
+                            </form>
                         </div>
                     </div>
                 </div>

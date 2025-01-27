@@ -33,31 +33,9 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            base_slug = slugify(self.name)
-            unique_slug = base_slug
-            counter = 1
-
-            # Ensure uniqueness
-            while Post.objects.filter(slug=unique_slug).exists():
-                unique_slug = f"{base_slug}-{counter}"
-                counter += 1
-
-            self.slug = unique_slug
+            slug_base = f"{self.name}-{self.house_type.name if self.house_type else ''}"
+            self.slug = slugify(slug_base)
         super().save(*args, **kwargs)
-        if self.status == 2:  # If the post is approved
-            ApprovedPost.objects.update_or_create(
-                post=self,
-                defaults={
-                    'name': self.name,
-                    'slug': self.slug,
-                    'house_type': self.house_type,
-                    'county': self.county,
-                    'year_founded': self.year_founded,
-                    'content': self.content,
-                    'coordinates': self.coordinates,
-                    'image_url': self.image_url,
-                }
-            )
 
     def __str__(self):
         return self.name
