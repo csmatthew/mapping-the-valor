@@ -34,8 +34,7 @@ def approve_post(request, pk):
     return redirect('post_detail', slug=post.slug)
 
 
-# login views
-@login_required
+# Public views
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
     return render(request, 'blog/post_detail.html', {'post': post})
