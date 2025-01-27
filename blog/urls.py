@@ -9,4 +9,5 @@ urlpatterns = [
     path('<slug:slug>/', views.post_detail, name='post_detail'),
     path('submit-for-approval/<int:pk>/', views.submit_for_approval, name='submit_for_approval'),
     path('approve-post/<int:pk>/', views.approve_post, name='approve_post'),
+    path('accounts/', include('allauth.urls')),
 ]
