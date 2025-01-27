@@ -3,11 +3,8 @@ from .models import Post, ApprovedPost
 from django.core.serializers import serialize
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-import json
-from .forms import PostForm
-from django.core.paginator import Paginator
-from django.db.models import Q
 from django.contrib import messages
+from .utils import fetch_wikipedia_image
 
 # Visual
 def monasteries_map(request):
@@ -37,6 +34,9 @@ def approve_post(request, pk):
 # Public views
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
+    if not post.image_url:
+        post.image_url = fetch_wikipedia_image(post.name, post.house_type.name)
+        post.save()
     return render(request, 'blog/post_detail.html', {'post': post})
 
 # Login/Logout
