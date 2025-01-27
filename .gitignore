@@ -8,3 +8,5 @@ node_modules/
 .github/
 cloudinary_python.txt
 personal_notes.txt
+convert_csv_to_json.py
+/blog/fixtures

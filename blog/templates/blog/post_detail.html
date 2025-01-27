@@ -42,8 +42,28 @@
                             </div>
                             {% endif %}
                             <div class="additional-text">
-                                <!-- Placeholder for additional text field -->
-                                <p class="card-text">Additional text field content goes here.</p>
+                                <!-- Spreadsheet-style form -->
+                                <h5 class="card-title">Valor Details</h5>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Holding</th>
+                                            <th>Pounds</th>
+                                            <th>Shillings</th>
+                                            <th>Pence</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for detail in post.financial_details.all %}
+                                        <tr>
+                                            <td>{{ detail.holding_title }}</td>
+                                            <td>{{ detail.holding_pounds }}</td>
+                                            <td>{{ detail.holding_shillings }}</td>
+                                            <td>{{ detail.holding_pence }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
