@@ -13,6 +13,7 @@
                 <!-- Left Column: Text Elements -->
                 <div class="col-md-6">
                     <h1 class="mb-4">{{ post.name }}{% if post.house_type %} {{ post.house_type }}{% endif %}</h1>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary mb-4">Return to Map</a>
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="card-title">Details</h5>
@@ -67,18 +68,28 @@
                                         {% endfor %}
                                         <tr>
                                             <td><strong>Grand Total</strong></td>
-                                            <td colspan="4" class="text-center fw-bold">{{ post.financial_details.all|calculate_grand_total_lsd }}</td>
+                                            <td colspan="4" class="text-center fw-bold">
+                                                {{ post.financial_details.all|calculate_grand_total_lsd }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <!-- Form to add new financial details -->
+                            {% if user.is_authenticated and user.is_staff %}
                             <h5 class="card-title">Add New Valor Detail</h5>
                             <form method="post">
                                 {% csrf_token %}
                                 {{ form.as_p }}
                                 <button type="submit" class="btn btn-primary">Add Detail</button>
                             </form>
+                            {% elif user.is_authenticated %}
+                            <h5 class="card-title">Add New Valor Detail</h5>
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit" class="btn btn-primary">Add Detail</button>
+                            </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
