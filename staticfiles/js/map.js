@@ -54,17 +54,39 @@ document.addEventListener('DOMContentLoaded', function () {
                 name += ' ' + fields.house_type;
             }
 
-            var popupContent = '<b>' + name + '</b><br>' + fields.county + '<br>' +
+            var popupContent = '<b>' + fields.name + '</b><br>' + fields.county + '<br>' +
                 '<a href="/' + fields.slug + '">View Details</a><br>';
 
             var marker = L.marker([lat, lng]).addTo(map)
                 .bindPopup(popupContent);
 
+            var isPopupOpen = false;
+
             marker.on('click', function() {
+                isPopupOpen = true;
+                marker.openPopup();
                 map.flyTo([lat, lng], 15, {
                     animate: true,
                     duration: 2 // Duration in seconds
                 }); // Zoom in to the marker location with a smooth transition
+            });
+
+            // Handle marker hover events
+            marker.on('mouseover', function() {
+                if (!isPopupOpen) {
+                    marker.openPopup();
+                }
+            });
+
+            marker.on('mouseout', function() {
+                if (!isPopupOpen) {
+                    marker.closePopup();
+                }
+            });
+
+            map.on('click', function() {
+                isPopupOpen = false;
+                marker.closePopup();
             });
         });
 
