@@ -54,6 +54,7 @@
                                             <th>Shillings</th>
                                             <th>Pence</th>
                                             <th>Total (£sd)</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody id="financial-details-body">
@@ -64,6 +65,22 @@
                                             <td>{{ detail.holding_shillings }}</td>
                                             <td>{{ detail.holding_pence }}</td>
                                             <td>{{ detail.total_lsd }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-secondary" onclick="showEditForm('{{ detail.id }}')">Edit</button>
+                                                <form method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="detail_id" value="{{ detail.id }}">
+                                                    <button type="submit" name="delete_detail" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <tr id="edit-form-{{ detail.id }}" style="display: none;">
+                                            <form method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="detail_id" value="{{ detail.id }}">
+                                                {{ form.as_p }}
+                                                <button type="submit" name="update_detail" class="btn btn-primary">Update</button>
+                                            </form>
                                         </tr>
                                         {% endfor %}
                                         <tr id="new-entry-row">
@@ -71,6 +88,7 @@
                                             <td contenteditable="true"></td>
                                             <td contenteditable="true"></td>
                                             <td contenteditable="true"></td>
+                                            <td></td>
                                             <td></td>
                                         </tr>
                                     </tbody>

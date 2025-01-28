@@ -36,6 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
     }
 
+    function showEditForm(detailId) {
+        document.getElementById('edit-form-' + detailId).style.display = 'table-row';
+    }
+    
     function populateHiddenFields() {
         const lastRow = financialDetailsBody.querySelector('tr:last-child');
         if (validateRow(lastRow)) {
@@ -66,3 +70,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+

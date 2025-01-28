@@ -20,12 +20,25 @@ def post_detail(request, slug):
         post.image_url = fetch_wikipedia_image(post.name, post.house_type.name)
         post.save()
     if request.method == 'POST':
-        form = FinancialDetailForm(request.POST)
-        if form.is_valid():
-            financial_detail = form.save(commit=False)
-            financial_detail.post = post
-            financial_detail.save()
+        if 'update_detail' in request.POST:
+            detail_id = request.POST.get('detail_id')
+            detail = get_object_or_404(FinancialDetail, id=detail_id)
+            form = FinancialDetailForm(request.POST, instance=detail)
+            if form.is_valid():
+                form.save()
+                return redirect('post_detail', slug=post.slug)
+        elif 'delete_detail' in request.POST:
+            detail_id = request.POST.get('detail_id')
+            detail = get_object_or_404(FinancialDetail, id=detail_id)
+            detail.delete()
             return redirect('post_detail', slug=post.slug)
+        else:
+            form = FinancialDetailForm(request.POST)
+            if form.is_valid():
+                financial_detail = form.save(commit=False)
+                financial_detail.post = post
+                financial_detail.save()
+                return redirect('post_detail', slug=post.slug)
     else:
         form = FinancialDetailForm()
     return render(request, 'blog/post_detail.html', {'post': post, 'form': form})
