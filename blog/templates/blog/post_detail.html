@@ -34,6 +34,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Right Column: Image and Additional Text Field -->
                 <div class="col-md-6">
                     <div class="card mb-4">
@@ -59,7 +60,7 @@
                                     </thead>
                                     <tbody id="financial-details-body">
                                         {% for detail in post.financial_details.all %}
-                                        <tr>
+                                        <tr id="row-{{ detail.id }}">
                                             <td>{{ detail.holding_title }}</td>
                                             <td>{{ detail.holding_pounds }}</td>
                                             <td>{{ detail.holding_shillings }}</td>
@@ -70,12 +71,12 @@
                                                 <form method="post" style="display: inline;">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="detail_id" value="{{ detail.id }}">
-                                                    <button type="submit" name="delete_detail" class="btn btn-danger">Delete</button>
+                                                    <button type="submit" name="delete_detail" class="btn btn-danger delete-btn">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
                                         <tr id="edit-form-{{ detail.id }}" style="display: none;">
-                                            <form method="post">
+                                            <form method="post" class="edit-form">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="detail_id" value="{{ detail.id }}">
                                                 {{ form.as_p }}
@@ -94,12 +95,13 @@
                                     </tbody>
                                 </table>
                                 {% if user.is_authenticated %}
-                            <form method="post">
-                                {% csrf_token %}
-                                {{ form.as_p }}
-                                <button type="submit" class="btn btn-primary">Add Entry</button>
-                            </form>
-                            {% endif %}
+                                <form id="financial-details-form" method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <button type="submit" class="btn btn-primary">Add Entry</button>
+                                </form>
+                                {% endif %}
+                                <div id="message-box"></div>  <!-- Where success/error messages will appear -->
                             </div>
                         </div>
                     </div>
