@@ -70,11 +70,17 @@ class FinancialDetail(models.Model):
     holding_pounds = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
     holding_shillings = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
     holding_pence = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    
+    @property
+    def total_lsd(self):
+        pounds = self.holding_pounds or 0
+        shillings = self.holding_shillings or 0
+        pence = self.holding_pence or 0
+        return f"£{pounds}/{shillings}/{pence}"
 
     def __str__(self):
         holding_title = self.holding_title or "No title"
-        holding_pounds = self.holding_pounds or 0
-        holding_shillings = self.holding_shillings or 0
-        holding_pence = self.holding_pence or 0
-        return f"{holding_title} - {holding_pounds} pounds, {holding_shillings} shillings, {holding_pence} pence"
+        return f"{holding_title} - {self.total_lsd}"
+
+    
 
