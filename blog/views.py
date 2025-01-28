@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Post, ApprovedPost, FinancialDetail
+from .models import Post, FinancialDetail
 from django.core.serializers import serialize
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -115,6 +115,55 @@ def post_detail(request, slug):
         'form': form,
         'financial_details': financial_details
     })
+
+@csrf_exempt
+def update_financial_detail(request):
+    if request.method == 'POST':
+        detail_id = request.POST.get('detail_id')
+        logger.debug(f"Detail ID for update: {detail_id}")
+        
+        # Check if the detail ID exists and is valid
+        if not detail_id:
+            return JsonResponse({'success': False, 'message': 'Detail ID is missing'})
+
+        try:
+            detail = get_object_or_404(FinancialDetail, id=detail_id)
+        except FinancialDetail.DoesNotExist:
+            logger.error(f"FinancialDetail with ID {detail_id} not found.")
+            return JsonResponse({'success': False, 'message': 'Detail not found'})
+
+        form = FinancialDetailForm(request.POST, instance=detail)
+        if form.is_valid():
+            form.save()
+            # Returning updated detail as JSON response for DOM update
+            return JsonResponse({
+                'success': True,
+                'id': detail.id,
+                'holding_title': detail.holding_title,
+                'holding_pounds': detail.holding_pounds,
+                'holding_shillings': detail.holding_shillings,
+                'holding_pence': detail.holding_pence,
+                'total_lsd': detail.total_lsd,
+                'message': 'Detail updated successfully'
+            })
+        else:
+            logger.error(f"Invalid form for update: {form.errors}")
+            return JsonResponse({'success': False, 'message': 'Form is invalid'})
+
+@csrf_exempt
+def delete_financial_detail(request):
+    if request.method == 'POST':
+        detail_id = request.POST.get('detail_id')
+        if not detail_id:
+            return JsonResponse({'success': False, 'message': 'Detail ID is missing'})
+
+        try:
+            detail = get_object_or_404(FinancialDetail, id=detail_id)
+            detail.delete()
+            return JsonResponse({'success': True, 'message': 'Detail deleted successfully', 'id': detail_id})
+        except FinancialDetail.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Detail not found'})
+    
 
 # Login/Logout
 def account_logout(request):

@@ -10,4 +10,6 @@ urlpatterns = [
     path('submit-for-approval/<int:pk>/', views.submit_for_approval, name='submit_for_approval'),
     path('approve-post/<int:pk>/', views.approve_post, name='approve_post'),
     path('accounts/', include('allauth.urls')),
+    path('update-financial-detail/', views.update_financial_detail, name='update_financial_detail'),
+    path('delete-financial-detail/', views.delete_financial_detail, name='delete_financial_detail'),
 ]

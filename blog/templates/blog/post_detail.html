@@ -76,30 +76,31 @@
                                             </td>
                                         </tr>
                                         <tr id="edit-form-{{ detail.id }}" style="display: none;">
-                                            <form method="post" class="edit-form">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="detail_id" value="{{ detail.id }}">
-                                                {{ form.as_p }}
-                                                <button type="submit" name="update_detail" class="btn btn-primary">Update</button>
-                                            </form>
+                                            <td colspan="6">
+                                                <form method="post" class="edit-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="detail_id" value="{{ detail.id }}">
+                                                    <!-- Add your form fields here -->
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                         {% endfor %}
-                                        <tr id="new-entry-row">
-                                            <td contenteditable="true"></td>
-                                            <td contenteditable="true"></td>
-                                            <td contenteditable="true"></td>
-                                            <td contenteditable="true"></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
                                     </tbody>
                                 </table>
+
+                                <!-- Form for adding new financial detail (moved outside the loop) -->
                                 {% if user.is_authenticated %}
-                                <form id="financial-details-form" method="post">
-                                    {% csrf_token %}
-                                    {{ form.as_p }}
-                                    <button type="submit" class="btn btn-primary">Add Entry</button>
-                                </form>
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Add New Detail</h5>
+                                            <form method="POST" id="financial-details-form">
+                                                {% csrf_token %}
+                                                {{ form.as_p }}
+                                                <button type="submit" class="btn btn-primary">Add Detail</button>
+                                            </form>
+                                        </div>
+                                    </div>
                                 {% endif %}
                                 <div id="message-box"></div>  <!-- Where success/error messages will appear -->
                             </div>
@@ -110,5 +111,66 @@
         </div>
     </div>
 </div>
+
+<script>
+function showEditForm(detailId) {
+    var formRow = document.getElementById('edit-form-' + detailId);
+    if (formRow.style.display === 'none') {
+        formRow.style.display = 'table-row';
+    } else {
+        formRow.style.display = 'none';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const addForm = document.querySelector("#financial-details-form");
+    if (addForm) {
+        addForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            let formData = new FormData(addForm);
+            formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+            fetch(window.location.href, { // Send it to the current page
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message); // Show success message
+                    addNewRow(data); // Add the new row dynamically
+                    addForm.reset(); // Reset form to prevent duplication
+                } else {
+                    alert(data.message); // Show error message
+                }
+            })
+            .catch(error => {
+                alert("An error occurred: " + error);
+            });
+        });
+    }
+});
+
+function addNewRow(data) {
+    let newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${data.holding_title}</td>
+        <td>${data.holding_pounds}</td>
+        <td>${data.holding_shillings}</td>
+        <td>${data.holding_pence}</td>
+        <td>${data.total_lsd}</td>
+        <td>
+            <button type="button" class="btn btn-secondary" onclick="showEditForm('${data.id}')">Edit</button>
+            <form method="post" style="display: inline;">
+                <input type="hidden" name="csrfmiddlewaretoken" value="${data.csrf_token}">
+                <input type="hidden" name="detail_id" value="${data.id}">
+                <button type="submit" name="delete_detail" class="btn btn-danger">Delete</button>
+            </form>
+        </td>
+    `;
+    document.getElementById('financial-details-body').appendChild(newRow);
+}
+</script>
 
 {% endblock %}

@@ -73,7 +73,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(data => {
                     if (data.success) {
                         alert(data.message); // Show success message
-                        location.reload(); // Reload the page to reflect changes (or you can update the table dynamically)
+                        addNewRow(data); // Add the new row dynamically
+                        addForm.reset(); // Reset form to prevent duplication
                     } else {
                         alert(data.message); // Show error message
                     }
@@ -84,74 +85,48 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Handle form submission for updating existing entries
-    const editForms = document.querySelectorAll('.financial-edit-form');
-    editForms.forEach(form => {
-        form.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent default form submission
+    function showEditForm(detailId) {
+        // Toggle the visibility of the corresponding edit form
+        var formRow = document.getElementById('edit-form-' + detailId);
+        if (formRow.style.display === 'none') {
+            formRow.style.display = 'table-row';
+        } else {
+            formRow.style.display = 'none';
+        }
+    }
 
-            const formData = new FormData(form); // Get the form data
-            fetch(window.location.href, { // Send it to the current page
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message); // Show success message
-                        location.reload(); // Reload the page to reflect changes
-                    } else {
-                        alert(data.message); // Show error message
-                    }
-                })
-                .catch(error => {
-                    alert("An error occurred: " + error);
-                });
-        });
-    });
+    // Function to add new row to the table dynamically
+    function addNewRow(data) {
+        let newRow = document.createElement('tr');
+        newRow.id = `row-${data.id}`;
+        newRow.innerHTML = `
+            <td>${data.holding_title}</td>
+            <td>${data.holding_pounds}</td>
+            <td>${data.holding_shillings}</td>
+            <td>${data.holding_pence}</td>
+            <td>${data.total_lsd}</td>
+            <td>
+                <button type="button" class="btn btn-secondary" onclick="showEditForm('${data.id}')">Edit</button>
+                <form method="post" style="display: inline;">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${data.csrf_token}">
+                    <input type="hidden" name="detail_id" value="${data.id}">
+                    <button type="submit" name="delete_detail" class="btn btn-danger delete-btn">Delete</button>
+                </form>
+            </td>
+        `;
+        document.getElementById('financial-details-body').appendChild(newRow);
+    }
 
-    // Handle delete button clicks
-    const deleteButtons = document.querySelectorAll('.delete-detail-button');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
-            event.preventDefault(); // Prevent default button action
-
-            const detailId = this.getAttribute('data-detail-id'); // Get the detail ID from the button's data attribute
-            const formData = new FormData();
-            formData.append('detail_id', detailId);
-            formData.append('delete_detail', true);
-
-            fetch(window.location.href, { // Send the data to the current page
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message); // Show success message
-                        location.reload(); // Reload the page to reflect changes
-                    } else {
-                        alert(data.message); // Show error message
-                    }
-                })
-                .catch(error => {
-                    alert("An error occurred: " + error);
-                });
-        });
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Handle the 'Add Entry' button click event
+    // Handle the 'Add Entry' button click event (added entry functionality)
     document.getElementById('add-entry')?.addEventListener('click', function(event) {
         event.preventDefault();
-
+    
         let row = document.getElementById('new-entry-row');
         let holdingTitle = row.cells[0].textContent.trim();
         let holdingPounds = row.cells[1].textContent.trim();
         let holdingShillings = row.cells[2].textContent.trim();
         let holdingPence = row.cells[3].textContent.trim();
-
+    
         let formData = new FormData();
         formData.append('holding_title', holdingTitle);
         formData.append('holding_pounds', holdingPounds);
@@ -160,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Get the CSRF token
         formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
-
+    
         // Send the data via AJAX
         fetch(window.location.href, {
             method: 'POST',
@@ -169,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // If the entry was added successfully, append it to the table
+                // Only add the new row, no need to recreate or re-render the form fields
                 let newRow = document.createElement('tr');
                 newRow.innerHTML = `
                     <td>${data.holding_title}</td>
@@ -225,10 +200,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Handle delete button click (AJAX delete)
-    document.querySelectorAll('.delete-form').forEach(function(deleteForm) {
-        deleteForm.addEventListener('submit', function(event) {
+    document.querySelectorAll('.delete-btn').forEach(function(deleteBtn) {
+        deleteBtn.addEventListener('click', function(event) {
             event.preventDefault();
-            let formData = new FormData(deleteForm);
+            const form = deleteBtn.closest('form');
+            const formData = new FormData(form);
 
             fetch(window.location.href, {
                 method: 'POST',
@@ -237,11 +213,14 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    let row = document.getElementById(`detail-${data.id}`);
+                    const row = document.getElementById(`row-${data.id}`);
                     row.remove();
                 } else {
-                    alert('Failed to delete entry');
+                    alert(data.message); // Show error message
                 }
+            })
+            .catch(error => {
+                alert("An error occurred: " + error);
             });
         });
     });
