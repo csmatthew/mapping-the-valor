@@ -1,4 +1,4 @@
-# blog/utils.py
+# records/utils.py
 import requests
 
 def fetch_wikipedia_image(title, house_type):
