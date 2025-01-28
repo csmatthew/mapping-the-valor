@@ -76,14 +76,10 @@
                                     </tbody>
                                 </table>
                                 {% if user.is_authenticated %}
-                            <form method="post" action="{% url 'post_detail' post.slug %}">
+                            <form method="post">
                                 {% csrf_token %}
-                                <input type="hidden" name="holding_title" id="holding_title">
-                                <input type="hidden" name="holding_pounds" id="holding_pounds">
-                                <input type="hidden" name="holding_shillings" id="holding_shillings">
-                                <input type="hidden" name="holding_pence" id="holding_pence">
-                                <button type="button" id="add-entry-btn" class="btn btn-primary">Add Entry</button>
-                                <button type="submit" id="save-entries-btn" class="btn btn-primary">Save Entries</button>
+                                {{ form.as_p }}
+                                <button type="submit" class="btn btn-primary">Add Entry</button>
                             </form>
                             {% endif %}
                             </div>
