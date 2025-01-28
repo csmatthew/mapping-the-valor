@@ -67,9 +67,9 @@ class ApprovedPost(models.Model):
 class FinancialDetail(models.Model):
     post = models.ForeignKey(Post, related_name='financial_details', on_delete=models.CASCADE)
     holding_title = models.CharField(max_length=200, blank=True, null=True)
-    holding_pounds = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    holding_shillings = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    holding_pence = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    holding_pounds = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    holding_shillings = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    holding_pence = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
 
     def __str__(self):
         holding_title = self.holding_title or "No title"
