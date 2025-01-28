@@ -46,7 +46,7 @@
                             <div class="additional-text">
                                 <!-- Spreadsheet-style form -->
                                 <h5 class="card-title">Valor Details</h5>
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-responsive">
                                     <thead>
                                         <tr>
                                             <th>Holding</th>
@@ -56,7 +56,7 @@
                                             <th>Total (£sd)</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="financial-details-body">
                                         {% for detail in post.financial_details.all %}
                                         <tr>
                                             <td>{{ detail.holding_title }}</td>
@@ -66,30 +66,27 @@
                                             <td>{{ detail.total_lsd }}</td>
                                         </tr>
                                         {% endfor %}
-                                        <tr>
-                                            <td><strong>Grand Total</strong></td>
-                                            <td colspan="4" class="text-center fw-bold">
-                                                {{ post.financial_details.all|calculate_grand_total_lsd }}</td>
+                                        <tr id="new-entry-row">
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td></td>
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                            <!-- Form to add new financial details -->
-                            {% if user.is_authenticated and user.is_staff %}
-                            <h5 class="card-title">Add New Valor Detail</h5>
-                            <form method="post">
+                                {% if user.is_authenticated %}
+                            <form method="post" action="{% url 'post_detail' post.slug %}">
                                 {% csrf_token %}
-                                {{ form.as_p }}
-                                <button type="submit" class="btn btn-primary">Add Detail</button>
-                            </form>
-                            {% elif user.is_authenticated %}
-                            <h5 class="card-title">Add New Valor Detail</h5>
-                            <form method="post">
-                                {% csrf_token %}
-                                {{ form.as_p }}
-                                <button type="submit" class="btn btn-primary">Add Detail</button>
+                                <input type="hidden" name="holding_title" id="holding_title">
+                                <input type="hidden" name="holding_pounds" id="holding_pounds">
+                                <input type="hidden" name="holding_shillings" id="holding_shillings">
+                                <input type="hidden" name="holding_pence" id="holding_pence">
+                                <button type="button" id="add-entry-btn" class="btn btn-primary">Add Entry</button>
+                                <button type="submit" id="save-entries-btn" class="btn btn-primary">Save Entries</button>
                             </form>
                             {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -97,4 +94,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
