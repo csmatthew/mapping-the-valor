@@ -76,11 +76,34 @@ class FinancialDetail(models.Model):
         pounds = self.holding_pounds or 0
         shillings = self.holding_shillings or 0
         pence = self.holding_pence or 0
-        return f"£{pounds}/{shillings}/{pence}"
+        
+        # Convert pence to shillings and pounds
+        total_pence = pounds * 240 + shillings * 12 + pence
+        total_pounds = total_pence // 240
+        remaining_pence = total_pence % 240
+        total_shillings = remaining_pence // 12
+        total_pence = remaining_pence % 12
+
+        return f"£{total_pounds}/{total_shillings}/{total_pence}"
 
     def __str__(self):
         holding_title = self.holding_title or "No title"
         return f"{holding_title} - {self.total_lsd}"
+
+    @staticmethod
+    def calculate_grand_total_lsd(details):
+        total_pounds = sum(detail.holding_pounds or 0 for detail in details)
+        total_shillings = sum(detail.holding_shillings or 0 for detail in details)
+        total_pence = sum(detail.holding_pence or 0 for detail in details)
+        
+        # Convert pence to shillings and pounds
+        total_pence += total_shillings * 12 + total_pounds * 240
+        total_pounds = total_pence // 240
+        remaining_pence = total_pence % 240
+        total_shillings = remaining_pence // 12
+        total_pence = remaining_pence % 12
+
+        return f"£{total_pounds}/{total_shillings}/{total_pence}"
 
     
 
