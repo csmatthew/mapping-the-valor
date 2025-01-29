@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from .views import index, ValorRecordListView
 
 urlpatterns = [
-    path('', views.monasteries_map, name='home'),
+    path('', index, name='index'),
+    path('valor-records/', ValorRecordListView.as_view(), name='valor_list'),
 ]
