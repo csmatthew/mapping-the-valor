@@ -38,7 +38,7 @@ ALLOWED_HOSTS = [
     ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.codeinstitute-ide.net',
+    'https://localhost',
     'https://*.herokuapp.com'
     ]
 
