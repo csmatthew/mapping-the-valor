@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 
 STATUS = ((0, "Draft"), (1, "Pending Approval"), (2, "Published"))
+TYPE_CHOICES = (
+    ('monastery', 'Monastery'),
+    # Add other types here if needed
+)
 
 class County(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -19,6 +23,7 @@ class ValorRecord(models.Model):
     county = models.ForeignKey(
         County, on_delete=models.CASCADE, related_name='valor_records'  # Foreign key to County
     )
+    type = models.CharField(max_length=50, choices=TYPE_CHOICES, default='monastery')
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
