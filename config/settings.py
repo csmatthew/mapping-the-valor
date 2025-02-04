@@ -16,7 +16,7 @@ import dj_database_url
 
 # Import env if it exists
 if os.path.exists('env.py'):
-    import env
+    import env  # noqa: F401
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -35,12 +35,12 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '.herokuapp.com',
-    ]
+]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://localhost',
     'https://*.herokuapp.com'
-    ]
+]
 
 # Application definition
 
