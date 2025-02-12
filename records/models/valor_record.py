@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from .hierarchy import Province, Diocese, Archdeaconry, Deanery
 
 
 class ValorRecord(models.Model):
@@ -18,6 +19,18 @@ class ValorRecord(models.Model):
         max_length=50,
         choices=RECORD_TYPE_CHOICES,
         default='Parish'
+    )
+    province = models.ForeignKey(
+        Province, on_delete=models.CASCADE, null=True, blank=True
+    )
+    diocese = models.ForeignKey(
+        Diocese, on_delete=models.CASCADE, null=True, blank=True
+    )
+    archdeaconry = models.ForeignKey(
+        Archdeaconry, on_delete=models.CASCADE, null=True, blank=True
+    )
+    deanery = models.ForeignKey(
+        Deanery, on_delete=models.CASCADE, null=True, blank=True
     )
 
     def __str__(self):
