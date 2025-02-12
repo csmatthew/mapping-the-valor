@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'crispy_forms',
     'crispy_bootstrap5',
+    'dal',
+    'dal_select2',
     'django_summernote',
     'cloudinary',
     'records',
