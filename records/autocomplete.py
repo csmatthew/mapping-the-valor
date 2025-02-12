@@ -7,11 +7,9 @@ class DioceseAutocomplete(autocomplete.Select2QuerySetView):
         if not self.request.user.is_authenticated:
             return Diocese.objects.none()
 
-        qs = Diocese.objects.all()
+        qs = Diocese.objects.all().order_by('name')
 
-        province_id = self.forwarded.get('province', None)
-
-        if province_id:
-            qs = qs.filter(province_id=province_id)
+        if self.q:
+            qs = qs.filter(name__icontains=self.q)
 
         return qs

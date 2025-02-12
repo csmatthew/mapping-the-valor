@@ -2,7 +2,7 @@ from django.contrib import admin
 from dal import autocomplete
 from .models.valor_record import ValorRecord
 from .models.hierarchy import Province, Diocese, Archdeaconry
-from .forms import DioceseForm
+from .forms import DioceseForm, ArchdeaconryForm
 
 class ValorRecordAdmin(admin.ModelAdmin):
     list_display = (
@@ -25,8 +25,7 @@ class ValorRecordAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'diocese':
             kwargs['widget'] = autocomplete.ModelSelect2(
-                url='diocese-autocomplete',
-                forward=['province']
+                url='diocese-autocomplete'
             )
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -35,7 +34,12 @@ class DioceseAdmin(admin.ModelAdmin):
     list_display = ('name', 'province')
     search_fields = ('name', 'province__name')
 
+class ArchdeaconryAdmin(admin.ModelAdmin):
+    form = ArchdeaconryForm
+    list_display = ('name', 'diocese')
+    search_fields = ('name', 'diocese__name')
+
 admin.site.register(Province)
 admin.site.register(Diocese, DioceseAdmin)
-admin.site.register(Archdeaconry)
+admin.site.register(Archdeaconry, ArchdeaconryAdmin)
 admin.site.register(ValorRecord, ValorRecordAdmin)
