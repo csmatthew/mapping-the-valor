@@ -1,6 +1,6 @@
 from django import forms
 from dal import autocomplete
-from .models.hierarchy import Diocese, Archdeaconry, Deanery
+from .models.hierarchy import Diocese, Archdeaconry, Deanery, Parish
 
 
 class DioceseForm(forms.ModelForm):
@@ -47,3 +47,22 @@ class DeaneryForm(forms.ModelForm):
                 "You must select a valid archdeaconry."
             )
         return archdeaconry
+
+
+class ParishForm(forms.ModelForm):
+    class Meta:
+        model = Parish
+        fields = ['name', 'deanery']
+        widgets = {
+            'deanery': autocomplete.ModelSelect2(
+                url='deanery-autocomplete'
+            )
+        }
+
+    def clean_deanery(self):
+        deanery = self.cleaned_data.get('deanery')
+        if not deanery:
+            raise forms.ValidationError(
+                "You must select a valid deanery."
+            )
+        return deanery
