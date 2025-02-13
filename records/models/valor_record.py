@@ -1,5 +1,5 @@
 from django.db import models
-from .hierarchy import Province, Diocese, Archdeaconry, Deanery
+from .hierarchy import Province, Diocese, Archdeaconry, Deanery, Parish
 
 
 class ValorRecord(models.Model):
@@ -30,6 +30,9 @@ class ValorRecord(models.Model):
     )
     deanery = models.ForeignKey(
         Deanery, on_delete=models.CASCADE, null=True, blank=True
+    )
+    parish = models.ForeignKey(
+        Parish, on_delete=models.CASCADE, null=True, blank=True
     )
 
     def __str__(self):
