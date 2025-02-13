@@ -1,8 +1,8 @@
 from django.contrib import admin
 from dal import autocomplete
 from .models.valor_record import ValorRecord
-from .models.hierarchy import Province, Diocese, Archdeaconry, Deanery
-from .forms import DioceseForm, ArchdeaconryForm, DeaneryForm
+from .models.hierarchy import Province, Diocese, Archdeaconry, Deanery, Parish
+from .forms import DioceseForm, ArchdeaconryForm, DeaneryForm, ParishForm
 
 
 class ValorRecordAdmin(admin.ModelAdmin):
@@ -49,8 +49,15 @@ class DeaneryAdmin(admin.ModelAdmin):
     search_fields = ('name', 'archdeaconry__name')
 
 
+class ParishAdmin(admin.ModelAdmin):
+    form = ParishForm
+    list_display = ('name', 'deanery')
+    search_fields = ('name', 'deanery__name')
+
+
 admin.site.register(Province)
 admin.site.register(Diocese, DioceseAdmin)
 admin.site.register(Archdeaconry, ArchdeaconryAdmin)
 admin.site.register(Deanery, DeaneryAdmin)
+admin.site.register(Parish, ParishAdmin)
 admin.site.register(ValorRecord, ValorRecordAdmin)
