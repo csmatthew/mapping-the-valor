@@ -1,6 +1,7 @@
 from django import forms
 from dal import autocomplete
 from .models.hierarchy import Diocese, Archdeaconry, Deanery, Parish
+from .models.valor_record import ValorRecord
 
 
 class DioceseForm(forms.ModelForm):
@@ -66,3 +67,29 @@ class ParishForm(forms.ModelForm):
                 "You must select a valid deanery."
             )
         return deanery
+
+
+class ValorRecordForm(forms.ModelForm):
+    class Meta:
+        model = ValorRecord
+        fields = [
+            'name', 'content', 'slug', 'record_type', 'province',
+            'diocese', 'archdeaconry', 'deanery', 'parish'
+        ]
+        widgets = {
+            'province': autocomplete.ModelSelect2(
+                url='province-autocomplete'
+            ),
+            'diocese': autocomplete.ModelSelect2(
+                url='diocese-autocomplete', forward=['province']
+            ),
+            'archdeaconry': autocomplete.ModelSelect2(
+                url='archdeaconry-autocomplete', forward=['diocese']
+            ),
+            'deanery': autocomplete.ModelSelect2(
+                url='deanery-autocomplete', forward=['archdeaconry']
+            ),
+            'parish': autocomplete.ModelSelect2(
+                url='parish-autocomplete', forward=['deanery']
+            ),
+        }
