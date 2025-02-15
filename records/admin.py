@@ -2,22 +2,38 @@ from django.contrib import admin
 from dal import autocomplete
 from .models.valor_record import ValorRecord
 from .models.hierarchy import Province, Diocese, Archdeaconry, Deanery, Parish
+from .models.holding import Holding
+from .models.monastery import Monastery
 from .forms import (
-    DioceseForm, ArchdeaconryForm, DeaneryForm, ParishForm, ValorRecordForm
+    DioceseForm, ArchdeaconryForm, DeaneryForm,
+    ParishForm, ValorRecordForm, MonasteryForm
 )
+
+
+class HoldingInline(admin.TabularInline):
+    model = Holding
+    extra = 1
+
+    def get_extra(self, request, obj=None, **kwargs):
+        return 1
+
+    def get_verbose_name(self, obj):
+        return f"Holdings for {obj.name}"
 
 
 class ValorRecordAdmin(admin.ModelAdmin):
     form = ValorRecordForm
     list_display = (
         'name', 'record_type', 'province', 'diocese',
-        'archdeaconry', 'deanery', 'parish', 'created_at', 'updated_at'
+        'archdeaconry', 'deanery', 'monastery',
+        'created_at', 'updated_at'
     )
     list_filter = (
-        'record_type', 'province', 'diocese',
-        'archdeaconry', 'deanery', 'parish'
+        'record_type', 'province', 'diocese', 'archdeaconry',
+        'deanery', 'monastery'
     )
     search_fields = ('name', 'content')
+    inlines = [HoldingInline]
 
     class Media:
         js = (
@@ -47,6 +63,10 @@ class ValorRecordAdmin(admin.ModelAdmin):
                 url='parish-autocomplete',
                 forward=['deanery']
             )
+        elif db_field.name == 'monastery':
+            kwargs['widget'] = autocomplete.ModelSelect2(
+                url='monastery-autocomplete'
+            )
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
@@ -74,9 +94,16 @@ class ParishAdmin(admin.ModelAdmin):
     search_fields = ('name', 'deanery__name')
 
 
+class MonasteryAdmin(admin.ModelAdmin):
+    form = MonasteryForm
+    list_display = ('monastery_name', 'house_type', 'religious_order', 'abbot')
+    search_fields = ('monastery_name', 'abbot')
+
+
 admin.site.register(Province)
 admin.site.register(Diocese, DioceseAdmin)
 admin.site.register(Archdeaconry, ArchdeaconryAdmin)
 admin.site.register(Deanery, DeaneryAdmin)
 admin.site.register(Parish, ParishAdmin)
 admin.site.register(ValorRecord, ValorRecordAdmin)
+admin.site.register(Monastery, MonasteryAdmin)
