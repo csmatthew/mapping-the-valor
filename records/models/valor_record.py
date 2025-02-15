@@ -1,12 +1,13 @@
 from django.db import models
 from .hierarchy import Province, Diocese, Archdeaconry, Deanery, Parish
+from .monastery import Monastery
 
 
 class ValorRecord(models.Model):
     RECORD_TYPE_CHOICES = [
-        ('Parish', 'Parish'),
-        ('Religious House', 'Religious House'),
+        ('Monastery', 'Monastery'),
         ('College', 'College'),
+        ('Rectory', 'Rectory'),
     ]
 
     name = models.CharField(max_length=255)
@@ -17,7 +18,7 @@ class ValorRecord(models.Model):
     record_type = models.CharField(
         max_length=50,
         choices=RECORD_TYPE_CHOICES,
-        default='Parish'
+        default='Monastery'
     )
     province = models.ForeignKey(
         Province, on_delete=models.CASCADE, null=True, blank=True
@@ -33,6 +34,9 @@ class ValorRecord(models.Model):
     )
     parish = models.ForeignKey(
         Parish, on_delete=models.CASCADE, null=True, blank=True
+    )
+    monastery = models.ForeignKey(
+        Monastery, on_delete=models.CASCADE, null=True, blank=True
     )
 
     def __str__(self):
