@@ -112,3 +112,12 @@ class MonasteryForm(forms.ModelForm):
         fields = [
             'house_type', 'religious_order', 'monastery_name', 'abbot'
         ]
+
+
+class CreatePostForm(forms.ModelForm):
+    latitude = forms.FloatField(widget=forms.HiddenInput())
+    longitude = forms.FloatField(widget=forms.HiddenInput())
+
+    class Meta:
+        model = ValorRecord
+        fields = ['name', 'content', 'latitude', 'longitude']

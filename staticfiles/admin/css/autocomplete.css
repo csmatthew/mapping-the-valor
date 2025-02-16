@@ -207,7 +207,6 @@ select.admin-autocomplete {
     border: none;
     outline: 0;
     box-shadow: none;
-    appearance: textfield;
     -webkit-appearance: textfield;
 }
 
@@ -273,4 +272,8 @@ select.admin-autocomplete {
     cursor: default;
     display: block;
     padding: 6px;
+}
+
+.errors .select2-selection {
+    border: 1px solid var(--error-fg);
 }

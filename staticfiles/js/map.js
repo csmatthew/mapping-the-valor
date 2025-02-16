@@ -90,6 +90,15 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
+        // Handle map click event
+        map.on('click', function(e) {
+            var latlng = e.latlng;
+            var createPostForm = document.getElementById('create-post-form');
+            createPostForm.style.display = 'block';
+            document.getElementById('id_latitude').value = latlng.lat;
+            document.getElementById('id_longitude').value = latlng.lng;
+        });
+
         // Handle overlay click event
         var mapOverlay = document.getElementById('map-overlay');
         var mapOverlayText = document.getElementById('map-overlay-text');

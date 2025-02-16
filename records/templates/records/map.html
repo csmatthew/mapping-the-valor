@@ -4,8 +4,8 @@
 {% block title %}Map{% endblock %}
 
 {% block content %}
-    <div id="map-container" class="mb-4" style="position: relative; height: 600px; width: 100%;">
-        <div id="map" style="height: 100%; width: 100%;"></div>
+    <div id="map-container">
+        <div id="map"></div>
         <div id="map-overlay" class="map-overlay">
             <p id="map-overlay-text">Click to activate map</p>
         </div>
@@ -15,6 +15,14 @@
     </script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="{% static 'js/map.js' %}"></script>
+
+    <div id="create-post-form">
+        <form method="post" action="{% url 'create_post' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Create Post</button>
+        </form>
+    </div>
 {% endblock %}
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
