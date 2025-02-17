@@ -8,20 +8,11 @@ document.addEventListener('DOMContentLoaded', function () {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // Handle overlay click event
-        var mapOverlay = document.getElementById('map-overlay');
-        var mapOverlayText = document.getElementById('map-overlay-text');
+        // Handle overlay button click event
+        var mapOverlayButton = document.getElementById('map-overlay-button');
 
-        // Detect if the device is a touch device
-        var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-        if (isTouchDevice) {
-            // Add touch-specific event handling here
-        } else {
-            mapOverlayText.textContent = 'Click to activate map';
-        }
-
-        mapOverlay.addEventListener('click', function () {
+        mapOverlayButton.addEventListener('click', function () {
+            var mapOverlay = document.getElementById('map-overlay');
             mapOverlay.style.display = 'none';
         });
     }
