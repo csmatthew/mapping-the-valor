@@ -4,25 +4,25 @@
 {% block title %}Map{% endblock %}
 
 {% block content %}
-    <div id="map-container">
-        <div id="map"></div>
-        <div id="map-overlay" class="map-overlay">
-            <p id="map-overlay-text">Click to activate map</p>
-        </div>
+<div id="map-container">
+    <div id="map"></div>
+    <div id="map-overlay" class="map-overlay">
+        <button id="map-overlay-button">Click to activate map</button>
     </div>
-    <script id="monasteries-data" type="application/json">
-        {{ monasteries|safe }}
-    </script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="{% static 'js/map.js' %}"></script>
+</div>
 
-    <div id="create-post-form">
-        <form method="post" action="{% url 'create_post' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Create Post</button>
-        </form>
-    </div>
-{% endblock %}
+
+
+<div id="create-post-form">
+    <form method="post" action="{% url 'create_post' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Post</button>
+    </form>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="{% static 'js/map.js' %}"></script>
+{% endblock content %}
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
