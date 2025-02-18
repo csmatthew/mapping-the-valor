@@ -47,6 +47,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Show the form
                 document.getElementById('pin-form-container').style.display = 'block';
+
+                // Disable pin placement
+                pinPlacementEnabled = false;
+                togglePinPlacementButton.textContent = 'Enable Pin Placement';
+                console.log('Pin placement disabled');
             }
         });
     }

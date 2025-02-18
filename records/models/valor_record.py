@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from .hierarchy import Province, Diocese, Archdeaconry, Deanery, Parish
 from .monastery import Monastery
 
@@ -8,6 +9,12 @@ class ValorRecord(models.Model):
         ('Monastery', 'Monastery'),
         ('College', 'College'),
         ('Rectory', 'Rectory'),
+    ]
+
+    STATUS_CHOICES = [
+        ('Draft', 'Draft'),
+        ('Submitted', 'Submitted'),
+        ('Published', 'Published'),
     ]
 
     name = models.CharField(max_length=255)
@@ -38,6 +45,20 @@ class ValorRecord(models.Model):
     monastery = models.ForeignKey(
         Monastery, on_delete=models.CASCADE, null=True, blank=True
     )
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    creator_username = models.CharField(max_length=255, null=True, blank=True)
+    status = models.CharField(
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default='Draft'
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.creator_username and self.user:
+            self.creator_username = self.user.username
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
