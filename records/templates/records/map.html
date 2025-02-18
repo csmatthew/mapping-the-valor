@@ -11,15 +11,25 @@
     </div>
 </div>
 
-
-
-<div id="create-post-form">
-    <form method="post" action="{% url 'create_post' %}">
+{% if user.is_authenticated %}
+<div id="pin-form-container" class="hidden">
+    <form id="pin-form" method="post" action="{% url 'create_post' %}">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create Post</button>
+        <input type="hidden" name="latitude" id="pin-latitude">
+        <input type="hidden" name="longitude" id="pin-longitude">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" required>
+        </div>
+        <div>
+            <label for="content">Content:</label>
+            <textarea name="content" id="content" required></textarea>
+        </div>
+        <button type="submit">Submit Pin</button>
     </form>
 </div>
+<button id="toggle-pin-placement" class="btn btn-primary">Enable Pin Placement</button>
+{% endif %}
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="{% static 'js/map.js' %}"></script>
