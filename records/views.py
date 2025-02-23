@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import CreatePostForm, SearchForm
 from .models.hierarchy import Diocese, Archdeaconry, Deanery, Parish
@@ -56,3 +56,12 @@ def search(request):
     return render(
         request, 'records/search.html', {'form': form, 'results': results}
     )
+
+
+def archdeaconry_detail(request, pk):
+    archdeaconry = get_object_or_404(Archdeaconry, pk=pk)
+    deaneries = Deanery.objects.filter(archdeaconry=archdeaconry)
+    return render(request, 'records/archdeaconry_detail.html', {
+        'archdeaconry': archdeaconry,
+        'deaneries': deaneries
+    })

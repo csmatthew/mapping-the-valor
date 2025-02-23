@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ archdeaconry.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ archdeaconry.name }}</h1>
+
+<h2>Deaneries</h2>
+<ul>
+    {% for deanery in deaneries %}
+    <li>{{ deanery.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock content %}
