@@ -33,24 +33,25 @@ def search(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            results['dioceses'] = Diocese.objects.filter(
-                name__icontains=query
-            )
-            results['archdeaconries'] = Archdeaconry.objects.filter(
-                name__icontains=query
-            )
-            results['deaneries'] = Deanery.objects.filter(
-                name__icontains=query
-            )
-            results['parishes'] = Parish.objects.filter(
-                name__icontains=query
-            )
-            results['valor_records'] = ValorRecord.objects.filter(
-                name__icontains=query
-            )
-            results['monasteries'] = Monastery.objects.filter(
-                monastery_name__icontains=query
-            )
+            results = {
+                'dioceses': Diocese.objects.filter(
+                    name__icontains=query
+                ),
+                'archdeaconries': Archdeaconry.objects.filter(
+                    name__icontains=query
+                ),
+                'deaneries': Deanery.objects.filter(
+                    name__icontains=query
+                ),
+                'parishes': Parish.objects.filter(
+                    name__icontains=query
+                ),
+                'valor_records': ValorRecord.objects.filter(
+                    name__icontains=query
+                ),
+                'monasteries': Monastery.objects.filter(
+                    monastery_name__icontains=query),
+            }
 
     return render(
         request, 'records/search.html', {'form': form, 'results': results}
