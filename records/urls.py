@@ -13,6 +13,11 @@ urlpatterns = [
     path('create-post/', views.create_post, name='create_post'),
     path('search/', views.search, name='search'),
     path(
+        'archdeaconry/<int:pk>/',
+        views.archdeaconry_detail,
+        name='archdeaconry_detail'
+    ),
+    path(
         'province-autocomplete/',
         ProvinceAutocomplete.as_view(),
         name='province-autocomplete'
