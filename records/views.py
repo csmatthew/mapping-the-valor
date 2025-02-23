@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import CreatePostForm
+from .forms import CreatePostForm, SearchForm
+from .models.hierarchy import Diocese, Archdeaconry, Deanery, Parish
+from .models.valor_record import ValorRecord
+from .models.monastery import Monastery
 
 
 def index(request):
@@ -17,3 +20,38 @@ def create_post(request):
     else:
         form = CreatePostForm()
     return render(request, 'create_post.html', {'form': form})
+
+
+def search(request):
+    form = SearchForm()
+    results = {
+        'dioceses': [], 'archdeaconries': [], 'deaneries': [], 'parishes': [],
+        'valor_records': [], 'monasteries': []
+    }
+
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results['dioceses'] = Diocese.objects.filter(
+                name__icontains=query
+            )
+            results['archdeaconries'] = Archdeaconry.objects.filter(
+                name__icontains=query
+            )
+            results['deaneries'] = Deanery.objects.filter(
+                name__icontains=query
+            )
+            results['parishes'] = Parish.objects.filter(
+                name__icontains=query
+            )
+            results['valor_records'] = ValorRecord.objects.filter(
+                name__icontains=query
+            )
+            results['monasteries'] = Monastery.objects.filter(
+                monastery_name__icontains=query
+            )
+
+    return render(
+        request, 'records/search.html', {'form': form, 'results': results}
+    )
