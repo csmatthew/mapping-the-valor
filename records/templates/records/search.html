@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Valor Records{% endblock %}
+
+{% block content %}
+<h1>Search Valor Records</h1>
+
+<form method="get" action="{% url 'search' %}">
+    {{ form.as_p }}
+    <button type="submit">Search</button>
+</form>
+
+<h2>Results</h2>
+{% if results.dioceses or results.archdeaconries or results.deaneries or results.parishes or results.valor_records or results.monasteries %}
+    {% if results.dioceses %}
+        <h3>Dioceses</h3>
+        <ul>
+            {% for diocese in results.dioceses %}
+            <li>{{ diocese.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if results.archdeaconries %}
+        <h3>Archdeaconries</h3>
+        <ul>
+            {% for archdeaconry in results.archdeaconries %}
+            <li>{{ archdeaconry.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if results.deaneries %}
+        <h3>Deaneries</h3>
+        <ul>
+            {% for deanery in results.deaneries %}
+            <li>{{ deanery.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if results.parishes %}
+        <h3>Parishes</h3>
+        <ul>
+            {% for parish in results.parishes %}
+            <li>{{ parish.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if results.valor_records %}
+        <h3>Valor Records</h3>
+        <ul>
+            {% for valor_record in results.valor_records %}
+            <li>{{ valor_record.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if results.monasteries %}
+        <h3>Monasteries</h3>
+        <ul>
+            {% for monastery in results.monasteries %}
+            <li>{{ monastery.monastery_name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% else %}
+    <p>No results found.</p>
+{% endif %}
+{% endblock content %}
