@@ -12,6 +12,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('create-post/', views.create_post, name='create_post'),
     path('search/', views.search, name='search'),
+    path('explore/', views.explore, name='explore'),
     path(
         'archdeaconry/<int:pk>/',
         views.archdeaconry_detail,
