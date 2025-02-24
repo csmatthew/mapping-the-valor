@@ -5,6 +5,7 @@
 
 {% block content %}
 <h1>{{ object.name }}</h1>
+<button onclick="window.history.back()">Back to {{ previous_list_type }}</button>
 
 <h2>{{ child_name }}</h2>
 <ul>
