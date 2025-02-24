@@ -160,17 +160,24 @@ class HierarchyDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         model = self.object.__class__
-        if (model == Province):
+        previous_list_type = get_previous_list_type(self.request)
+        context['previous_list_type'] = previous_list_type
+        if model == Province:
             context['children'] = Diocese.objects.filter(province=self.object)
             context['child_name'] = 'Dioceses'
-        elif (model == Diocese):
+            context['previous_list_type'] = previous_list_type
+        elif model == Diocese:
             context['children'] = Archdeaconry.objects.filter(
-                diocese=self.object)
+                diocese=self.object
+            )
             context['child_name'] = 'Archdeaconries'
-        elif (model == Archdeaconry):
+            context['previous_list_type'] = previous_list_type
+        elif model == Archdeaconry:
             context['children'] = Deanery.objects.filter(
-                archdeaconry=self.object)
+                archdeaconry=self.object
+            )
             context['child_name'] = 'Deaneries'
+            context['previous_list_type'] = previous_list_type
         return context
 
 
