@@ -1,14 +1,55 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Explore{% endblock %}
+{% block title %}Explore and Search{% endblock %}
 
 {% block content %}
-<h1>Explore Provinces</h1>
+<h1>Explore and Search</h1>
 
-<ul>
-    {% for province in provinces %}
-    <li><a href="{% url 'province_detail' province.pk %}">{{ province.name }}</a></li>
-    {% endfor %}
-</ul>
+<form method="get" action="{% url 'explore' %}">
+    <input type="text" name="query" value="{{ query }}" placeholder="Search...">
+    <button type="submit">Search</button>
+</form>
+
+{% if query %}
+    <h2>Search Results for "{{ query }}"</h2>
+    {% if results.dioceses or results.archdeaconries or results.deaneries or results.parishes or results.valor_records or results.monasteries %}
+        {% for category, items in results.items %}
+            {% if items %}
+                <h3>{{ category|title }}</h3>
+                <ul>
+                    {% for item in items %}
+                        <li>
+                            {% if category == 'dioceses' %}
+                                <a href="{% url 'diocese_detail' item.pk %}">{{ item.name }}</a>
+                            {% elif category == 'archdeaconries' %}
+                                <a href="{% url 'archdeaconry_detail' item.pk %}">{{ item.name }}</a>
+                            {% elif category == 'deaneries' %}
+                                <a href="{% url 'deanery_detail' item.pk %}">{{ item.name }}</a>
+                            {% elif category == 'parishes' %}
+                                <a href="{% url 'parish_detail' item.pk %}">{{ item.name }}</a>
+                            {% elif category == 'valor_records' %}
+                                <a href="{% url 'valorrecord_detail' item.pk %}">{{ item.name }}</a>
+                            {% elif category == 'monasteries' %}
+                                <a href="{% url 'monastery_detail' item.pk %}">{{ item.monastery_name }}</a>
+                            {% else %}
+                                {{ item.name }}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+{% else %}
+    <ul>
+        <li><a href="{% url 'explore_provinces' %}">Explore by Province</a></li>
+        <li><a href="{% url 'explore_dioceses' %}">Explore by Diocese</a></li>
+        <li><a href="{% url 'explore_archdeaconries' %}">Explore by Archdeaconry</a></li>
+        <li><a href="{% url 'explore_deaneries' %}">Explore by Deanery</a></li>
+        <li><a href="{% url 'explore_parishes' %}">Explore by Parish</a></li>
+    </ul>
+{% endif %}
 {% endblock content %}

@@ -7,6 +7,9 @@ class Province(models.Model):
     def __str__(self):
         return self.name
 
+    def get_url_name(self):
+        return 'province_detail'
+
 
 class Diocese(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -14,6 +17,9 @@ class Diocese(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_url_name(self):
+        return 'diocese_detail'
 
 
 class Archdeaconry(models.Model):
@@ -26,6 +32,9 @@ class Archdeaconry(models.Model):
     def __str__(self):
         return self.name
 
+    def get_url_name(self):
+        return 'archdeaconry_detail'
+
 
 class Deanery(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -37,6 +46,9 @@ class Deanery(models.Model):
     def __str__(self):
         return self.name
 
+    def get_url_name(self):
+        return 'deanery_detail'
+
 
 class Parish(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -47,3 +59,6 @@ class Parish(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_url_name(self):
+        return 'parish_detail'

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ object.name }}</h1>
+
+<h2>{{ child_name }}</h2>
+<ul>
+    {% for child in children %}
+    <li><a href="{% url child.get_url_name child.pk %}">{{ child.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock content %}
