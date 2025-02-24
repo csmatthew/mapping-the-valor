@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Explore{% endblock %}
+
+{% block content %}
+<h1>Explore Provinces</h1>
+
+<ul>
+    {% for province in provinces %}
+    <li>{{ province.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock content %}

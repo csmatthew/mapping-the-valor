@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import CreatePostForm, SearchForm
-from .models.hierarchy import Diocese, Archdeaconry, Deanery, Parish
+from .models.hierarchy import Province, Diocese, Archdeaconry, Deanery, Parish
 from .models.valor_record import ValorRecord
 from .models.monastery import Monastery
 
@@ -22,6 +22,7 @@ def create_post(request):
     return render(request, 'create_post.html', {'form': form})
 
 
+# For search.html
 def search(request):
     form = SearchForm()
     results = {
@@ -65,3 +66,9 @@ def archdeaconry_detail(request, pk):
         'archdeaconry': archdeaconry,
         'deaneries': deaneries
     })
+
+
+# For explore.html
+def explore(request):
+    provinces = Province.objects.all()
+    return render(request, 'records/explore.html', {'provinces': provinces})
