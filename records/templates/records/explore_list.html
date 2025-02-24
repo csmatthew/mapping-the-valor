@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load url_name %}
+
+{% block title %}Explore {{ title }}{% endblock %}
+
+{% block content %}
+
+<h1>Explore {{ title }}</h1>
+<button onclick="window.history.back()">Back to {{ previous_list_type }}</button>
+
+<form method="get" action="">
+    <input type="text" name="query" value="{{ query }}" placeholder="Search...">
+    <button type="submit">Search</button>
+</form>
+
+<ul>
+    {% for item in items %}
+    <li><a href="{% url item|url_name item.pk %}">{{ item.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock content %}
