@@ -59,16 +59,25 @@ def search(request):
     )
 
 
-def archdeaconry_detail(request, pk):
-    archdeaconry = get_object_or_404(Archdeaconry, pk=pk)
-    deaneries = Deanery.objects.filter(archdeaconry=archdeaconry)
-    return render(request, 'records/archdeaconry_detail.html', {
-        'archdeaconry': archdeaconry,
-        'deaneries': deaneries
-    })
-
-
 # For explore.html
 def explore(request):
     provinces = Province.objects.all()
     return render(request, 'records/explore.html', {'provinces': provinces})
+
+
+def province_detail(request, pk):
+    province = get_object_or_404(Province, pk=pk)
+    dioceses = Diocese.objects.filter(province=province)
+    return render(request, 'records/detail/province_detail.html', {
+        'province': province,
+        'dioceses': dioceses
+    })
+
+
+def archdeaconry_detail(request, pk):
+    archdeaconry = get_object_or_404(Archdeaconry, pk=pk)
+    deaneries = Deanery.objects.filter(archdeaconry=archdeaconry)
+    return render(request, 'records/detail/archdeaconry_detail.html', {
+        'archdeaconry': archdeaconry,
+        'deaneries': deaneries
+    })

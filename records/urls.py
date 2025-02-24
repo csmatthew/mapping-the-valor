@@ -14,6 +14,11 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('explore/', views.explore, name='explore'),
     path(
+        'province/<int:pk>/',
+        views.province_detail,
+        name='province_detail'
+    ),
+    path(
         'archdeaconry/<int:pk>/',
         views.archdeaconry_detail,
         name='archdeaconry_detail'
