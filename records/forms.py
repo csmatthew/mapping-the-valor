@@ -110,7 +110,11 @@ class MonasteryForm(forms.ModelForm):
     class Meta:
         model = Monastery
         fields = [
-            'house_type', 'religious_order', 'monastery_name', 'abbot'
+            'house_type',
+            'religious_order',
+            'monastery_name',
+            'abbot',
+            'source'
         ]
 
 

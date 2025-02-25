@@ -28,7 +28,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (monastery.latitude && monastery.longitude) {
                         var marker = L.marker([monastery.latitude, monastery.longitude])
                             .addTo(map)
-                            .bindPopup(`<b>${monastery.name}</b><br>House Type: ${monastery.house_type}<br>Religious Order: ${monastery.religious_order}<br>Abbot: ${monastery.abbot}`);
+                            .bindPopup(
+                                `<b>${monastery.name}</b><br>
+                                House Type: ${monastery.house_type}<br>
+                                Religious Order: ${monastery.religious_order}<br>
+                                Abbot: ${monastery.abbot}<br>
+                                Source: ${monastery.source}`
+                            );
                         console.log('Marker added at:', monastery.latitude, monastery.longitude);
 
                         var isPopupOpen = false;
