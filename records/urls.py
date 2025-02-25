@@ -12,6 +12,7 @@ from .models.hierarchy import Province, Diocese, Archdeaconry, Deanery, Parish
 urlpatterns = [
     path('', views.index, name='index'),
     path('create-post/', views.create_post, name='create_post'),
+    path('monasteries-json/', views.monasteries_json, name='monasteries_json'),
     path('explore/', views.explore, name='explore'),
     path(
         'explore/provinces/',

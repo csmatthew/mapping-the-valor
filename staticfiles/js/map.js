@@ -14,6 +14,60 @@ document.addEventListener('DOMContentLoaded', function () {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
+        // Fetch and plot monastery data
+        fetch("/records/monasteries-json/")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Monastery data:', data); // Log the fetched data
+                data.forEach(monastery => {
+                    if (monastery.latitude && monastery.longitude) {
+                        var marker = L.marker([monastery.latitude, monastery.longitude])
+                            .addTo(map)
+                            .bindPopup(`<b>${monastery.name}</b><br>House Type: ${monastery.house_type}<br>Religious Order: ${monastery.religious_order}<br>Abbot: ${monastery.abbot}`);
+                        console.log('Marker added at:', monastery.latitude, monastery.longitude);
+
+                        var isPopupOpen = false;
+
+                        marker.on('click', function() {
+                            isPopupOpen = true;
+                            marker.openPopup();
+                            map.flyTo([monastery.latitude, monastery.longitude], 15, {
+                                animate: true,
+                                duration: 2 // Duration in seconds
+                            }); // Zoom in to the marker location with a smooth transition
+                        });
+
+                        // Handle marker hover events
+                        marker.on('mouseover', function() {
+                            if (!isPopupOpen) {
+                                marker.openPopup();
+                            }
+                        });
+
+                        marker.on('mouseout', function() {
+                            if (!isPopupOpen) {
+                                marker.closePopup();
+                            }
+                        });
+
+                        map.on('click', function() {
+                            isPopupOpen = false;
+                            marker.closePopup();
+                        });
+                    } else {
+                        console.log('Missing coordinates for:', monastery.name);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching monastery data:', error);
+            });
+
         // Handle overlay button click event
         var mapOverlayButton = document.getElementById('map-overlay-button');
 
