@@ -4,7 +4,8 @@
 {% block title %}Map{% endblock %}
 
 {% block content %}
-<div id="map-container">
+<div id="map-container" class="position-relative">
+    <button id="placeholder-button" class="btn btn-secondary position-absolute" style="left: 50px; z-index: 1000;">Placeholder</button>
     <div id="map" style="height: 600px;"></div>
     <div id="map-overlay" class="map-overlay">
         <button id="map-overlay-button">Click to activate map</button>
