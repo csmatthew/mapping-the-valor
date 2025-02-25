@@ -96,8 +96,23 @@ class ParishAdmin(admin.ModelAdmin):
 
 class MonasteryAdmin(admin.ModelAdmin):
     form = MonasteryForm
-    list_display = ('monastery_name', 'house_type', 'religious_order', 'abbot')
+    list_display = (
+        'monastery_name',
+        'house_type',
+        'religious_order',
+        'abbot',
+        'latitude',
+        'longitude'
+    )
     search_fields = ('monastery_name', 'abbot')
+    fields = (
+        'monastery_name',
+        'house_type',
+        'religious_order',
+        'abbot',
+        'latitude',
+        'longitude'
+    )
 
 
 admin.site.register(Province)

@@ -14,7 +14,6 @@ class Monastery(models.Model):
         ('Cistercians', 'Cistercians'),
         ('Franciscans', 'Franciscans'),
         ('Dominicans', 'Dominicans'),
-        # Add more religious orders as needed
     ]
 
     house_type = models.CharField(
@@ -31,6 +30,8 @@ class Monastery(models.Model):
     )
     monastery_name = models.CharField(max_length=255, null=True, blank=True)
     abbot = models.CharField(max_length=255, null=True, blank=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.monastery_name

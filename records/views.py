@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView
+from django.http import JsonResponse
 from .forms import CreatePostForm, SearchForm
 from .models.hierarchy import Province, Diocese, Archdeaconry, Deanery, Parish
 from .models.valor_record import ValorRecord
@@ -22,6 +23,24 @@ def create_post(request):
     else:
         form = CreatePostForm()
     return render(request, 'create_post.html', {'form': form})
+
+
+# For map.html
+def monasteries_json(request):
+    monasteries = Monastery.objects.all()
+    data = [
+        {
+            'name': monastery.monastery_name,
+            'latitude': float(monastery.latitude),
+            'longitude': float(monastery.longitude),
+            'house_type': monastery.house_type,
+            'religious_order': monastery.religious_order,
+            'abbot': monastery.abbot,
+        }
+        for monastery in monasteries
+        if monastery.latitude and monastery.longitude
+    ]
+    return JsonResponse(data, safe=False)
 
 
 # For search.html
