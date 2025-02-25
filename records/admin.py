@@ -74,24 +74,28 @@ class DioceseAdmin(admin.ModelAdmin):
     form = DioceseForm
     list_display = ('name', 'province')
     search_fields = ('name', 'province__name')
+    ordering = ('name',)
 
 
 class ArchdeaconryAdmin(admin.ModelAdmin):
     form = ArchdeaconryForm
     list_display = ('name', 'diocese')
     search_fields = ('name', 'diocese__name')
+    ordering = ('name',)
 
 
 class DeaneryAdmin(admin.ModelAdmin):
     form = DeaneryForm
     list_display = ('name', 'archdeaconry')
     search_fields = ('name', 'archdeaconry__name')
+    ordering = ('name',)
 
 
 class ParishAdmin(admin.ModelAdmin):
     form = ParishForm
     list_display = ('name', 'deanery')
     search_fields = ('name', 'deanery__name')
+    ordering = ('name',)
 
 
 class MonasteryAdmin(admin.ModelAdmin):
@@ -115,6 +119,7 @@ class MonasteryAdmin(admin.ModelAdmin):
         'longitude',
         'source',
     )
+    ordering = ('monastery_name',)
 
 
 admin.site.register(Province)
