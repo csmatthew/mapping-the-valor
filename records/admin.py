@@ -112,7 +112,8 @@ class MonasteryAdmin(admin.ModelAdmin):
         'religious_order',
         'abbot',
         'latitude',
-        'longitude'
+        'longitude',
+        'source',
     )
 
 

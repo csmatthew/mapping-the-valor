@@ -30,7 +30,7 @@ def monasteries_json(request):
     monasteries = Monastery.objects.all()
     data = [
         {
-            'name': monastery.monastery_name,
+            'name': f"{monastery.monastery_name} {monastery.house_type}",
             'latitude': float(monastery.latitude),
             'longitude': float(monastery.longitude),
             'house_type': monastery.house_type,
