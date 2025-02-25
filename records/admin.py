@@ -102,7 +102,8 @@ class MonasteryAdmin(admin.ModelAdmin):
         'religious_order',
         'abbot',
         'latitude',
-        'longitude'
+        'longitude',
+        'source',
     )
     search_fields = ('monastery_name', 'abbot')
     fields = (

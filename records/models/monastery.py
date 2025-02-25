@@ -32,6 +32,7 @@ class Monastery(models.Model):
     abbot = models.CharField(max_length=255, null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
+    source = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.monastery_name

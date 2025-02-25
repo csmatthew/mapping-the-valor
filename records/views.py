@@ -36,6 +36,7 @@ def monasteries_json(request):
             'house_type': monastery.house_type,
             'religious_order': monastery.religious_order,
             'abbot': monastery.abbot,
+            'source': monastery.source,
         }
         for monastery in monasteries
         if monastery.latitude and monastery.longitude
