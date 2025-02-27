@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM fully loaded and parsed');
     var mapContainer = document.getElementById('map');
     var pinPlacementEnabled = false;
+    var markers = []; // Array to store the markers
 
     if (mapContainer && !mapContainer._leaflet_map) {
         var map = L.map('map').setView([54.5, -3], 6); // Centered on Britain
@@ -27,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 data.forEach(monastery => {
                     if (monastery.latitude && monastery.longitude) {
                         var marker = L.marker([monastery.latitude, monastery.longitude])
-                            .addTo(map)
                             .bindPopup(
                                 `<b>${monastery.name}</b><br>
                                 House Type: ${monastery.house_type}<br>
@@ -35,7 +35,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 Abbot: ${monastery.abbot}<br>
                                 Source: ${monastery.source}`
                             );
-                        console.log('Marker added at:', monastery.latitude, monastery.longitude);
+                        markers.push(marker); // Add marker to the array
+                        // Do not add marker to the map initially
+                        console.log('Marker prepared at:', monastery.latitude, monastery.longitude);
 
                         var isPopupOpen = false;
 
@@ -113,6 +115,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 togglePinPlacementButton.textContent = 'Enable Pin Placement';
                 console.log('Pin placement disabled');
             }
+        });
+
+        // Handle monastery toggle button click event to toggle marker visibility
+        var monasteryToggleButton = document.getElementById('monastery-toggle-button');
+        var markersVisible = false;
+
+        monasteryToggleButton.addEventListener('click', function () {
+            markersVisible = !markersVisible;
+            markers.forEach(marker => {
+                if (markersVisible) {
+                    marker.addTo(map);
+                } else {
+                    map.removeLayer(marker);
+                }
+            });
+            monasteryToggleButton.textContent = markersVisible ? 'Hide Monasteries' : 'Show Monasteries';
         });
     }
 });
