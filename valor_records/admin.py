@@ -1,24 +1,21 @@
 from django.contrib import admin
-from .models import Deanery, Institution, HouseType
-
-# Register your models here.
+from .models import ValorRecord, HouseType
 
 
-@admin.register(Deanery)
-class DeaneryAdmin(admin.ModelAdmin):
-    list_display = ('deanery_name',)
-    search_fields = ('deanery_name',)
+class HouseTypeInline(admin.StackedInline):
+    model = HouseType
+    can_delete = False
+    verbose_name_plural = 'House Type'
 
 
-@admin.register(Institution)
-class InstitutionAdmin(admin.ModelAdmin):
+class ValorRecordAdmin(admin.ModelAdmin):
     list_display = ('name', 'type', 'deanery')
-    search_fields = ('name', 'type', 'deanery__deanery_name')
     list_filter = ('type', 'deanery')
+    search_fields = ('name',)
+
+    # Add HouseType inline form only if the ValorRecord is a Monastery
+    inlines = [HouseTypeInline]
 
 
-@admin.register(HouseType)
-class HouseTypeAdmin(admin.ModelAdmin):
-    list_display = ('institution', 'house_type')
-    search_fields = ('institution__name', 'house_type')
-    list_filter = ('house_type',)
+# Register the models
+admin.site.register(ValorRecord, ValorRecordAdmin)
