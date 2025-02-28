@@ -1,6 +1,5 @@
 from django.db import models
-
-# Create your models here.
+from django.core.exceptions import ValidationError
 
 
 class Deanery(models.Model):
@@ -13,7 +12,7 @@ class Deanery(models.Model):
         verbose_name_plural = 'deaneries'
 
 
-class Institution(models.Model):
+class ValorRecord(models.Model):
     MONASTERY = 'Monastery'
     COLLEGIATE_CHURCH = 'Collegiate Church'
     RECTORY = 'Rectory'
@@ -28,8 +27,13 @@ class Institution(models.Model):
     type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     deanery = models.ForeignKey(Deanery, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.name
+    def clean(self):
+        super().clean()
+        if self.type == self.MONASTERY:
+            if not hasattr(self, 'housetype'):
+                raise ValidationError(
+                    'A Monastery must have an associated House type.'
+                )
 
 
 class HouseType(models.Model):
@@ -43,8 +47,8 @@ class HouseType(models.Model):
         (NUNNERY, 'Nunnery'),
     ]
 
-    institution = models.OneToOneField(Institution, on_delete=models.CASCADE)
+    valor_record = models.OneToOneField(ValorRecord, on_delete=models.CASCADE)
     house_type = models.CharField(max_length=50, choices=HOUSE_TYPE_CHOICES)
 
     def __str__(self):
-        return f"{self.institution.name} - {self.house_type}"
+        return f"{self.valor_record.name} - {self.house_type}"
