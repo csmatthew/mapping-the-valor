@@ -62,7 +62,6 @@ INSTALLED_APPS = [
     'dal_select2',
     'django_summernote',
     'cloudinary',
-    'records',
 ]
 
 # Cloudinary configuration
