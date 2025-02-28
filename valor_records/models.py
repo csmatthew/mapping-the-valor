@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 
 
 class Deanery(models.Model):
@@ -24,16 +25,31 @@ class ValorRecord(models.Model):
     ]
 
     name = models.CharField(max_length=255, unique=True)
-    type = models.CharField(max_length=50, choices=TYPE_CHOICES)
+    record_type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     deanery = models.ForeignKey(Deanery, on_delete=models.CASCADE)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_valor_records')
+    last_edited_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='edited_valor_records')
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
 
-    def clean(self):
-        super().clean()
-        if self.type == self.MONASTERY:
-            if not hasattr(self, 'housetype'):
-                raise ValidationError(
-                    'A Monastery must have an associated House type.'
-                )
+    def save(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # Retrieve the user from the kwargs and remove it from kwargs
+        if not self.pk:  # If the record is being created
+            if user:
+                self.created_by = user
+        if user:
+            self.last_edited_by = user  # Update last_edited_by on every save
+
+        super().save(*args, **kwargs)
+
+        # Perform validation after saving to ensure inline data is available
+        if self.record_type == self.MONASTERY and not hasattr(self, 'housetype'):
+            raise ValidationError('A Monastery must have an associated House type.')
+
+    def __str__(self):
+        return self.name
 
 
 class HouseType(models.Model):
