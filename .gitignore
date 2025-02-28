@@ -21,9 +21,12 @@ node_modules/
 
 # Ignore personal files
 cloudinary_python.txt
-personal_notes.txt
 convert_csv_to_json.py
 check_db.py
+z_reference_personal/
 
 # Ignore Django static files
 staticfiles/
+
+# Ignore database files with potentially sensitive data
+backup.sql
