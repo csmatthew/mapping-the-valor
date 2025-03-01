@@ -44,10 +44,6 @@ class ValorRecord(models.Model):
 
         super().save(*args, **kwargs)
 
-        # Perform validation after saving to ensure inline data is available
-        if self.record_type == self.MONASTERY and not hasattr(self, 'housetype'):
-            raise ValidationError('A Monastery must have an associated House type.')
-
     def __str__(self):
         return self.name
 

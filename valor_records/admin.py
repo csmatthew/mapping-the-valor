@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 from .models import ValorRecord, HouseType, Deanery
 
 
@@ -14,11 +15,11 @@ class DeaneryAdmin(admin.ModelAdmin):
     def has_module_permission(self, request):
         return False  # Hides Deanery from the admin sidebar
 
+
 class ValorRecordAdmin(admin.ModelAdmin):
     list_display = ('name', 'record_type', 'deanery', 'created_by', 'last_edited_by', 'get_house_type', 'date_created', 'date_updated')
     list_filter = ('record_type', 'deanery')
     search_fields = ('name',)
-
     inlines = [HouseTypeInline]
 
     def save_model(self, request, obj, form, change):
@@ -26,6 +27,15 @@ class ValorRecordAdmin(admin.ModelAdmin):
             obj.created_by = request.user
         obj.last_edited_by = request.user  # Update last_edited_by on every save
         super().save_model(request, obj, form, change)
+
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+        for instance in instances:
+            if isinstance(instance, HouseType):
+                if form.instance.record_type == ValorRecord.MONASTERY and not instance.house_type:
+                    raise ValidationError('A Monastery must have an associated House type.')
+            instance.save()
+        formset.save_m2m()
 
     def get_form(self, request, obj=None, **kwargs):
         """
