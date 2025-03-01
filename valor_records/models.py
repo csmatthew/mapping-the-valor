@@ -63,7 +63,7 @@ class HouseType(models.Model):
         (NUNNERY, 'Nunnery'),
     ]
 
-    valor_record = models.ForeignKey(ValorRecord, on_delete=models.CASCADE)
+    valor_record = models.OneToOneField(ValorRecord, on_delete=models.CASCADE)
     house_type = models.CharField(max_length=50, choices=HOUSE_TYPE_CHOICES)
 
     def __str__(self):

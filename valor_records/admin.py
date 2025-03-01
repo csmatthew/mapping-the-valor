@@ -6,7 +6,13 @@ class HouseTypeInline(admin.StackedInline):
     model = HouseType
     can_delete = False
     verbose_name_plural = 'House Type'
+    extra = 0
+    max_num = 1
 
+
+class DeaneryAdmin(admin.ModelAdmin):
+    def has_module_permission(self, request):
+        return False  # Hides Deanery from the admin sidebar
 
 class ValorRecordAdmin(admin.ModelAdmin):
     list_display = ('name', 'record_type', 'deanery', 'created_by', 'last_edited_by', 'get_house_type', 'date_created', 'date_updated')
@@ -39,4 +45,4 @@ class ValorRecordAdmin(admin.ModelAdmin):
 
 # Register the models with the custom admin
 admin.site.register(ValorRecord, ValorRecordAdmin)
-admin.site.register(Deanery)  # Register Deanery separately
+admin.site.register(Deanery, DeaneryAdmin)
