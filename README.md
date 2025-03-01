@@ -12,7 +12,8 @@
   * [Wireframes](#wireframes)
   * [Project Board](#project-board)
   * [Styling Choices](#styling-choices)
-* [Features for MVP](features-for-mvp)
+* [Features for MVP](#features-for-mvp)
+* [Apps](#apps)
 <p align="right"><a href="#mapping-the-valor">Back To Top</a></p>
 <br>
 
@@ -124,6 +125,14 @@ Remaining untranslated from its 16th century Latin, and printed in the 19th cent
 ## Database
 
 #### Database Schema
+
+## Apps
+
+* config
+* core
+  * manages the front end
+* valor_records
+  * controls the database input side of things
 
 ## Features
 

@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'dal_select2',
     'django_summernote',
     'cloudinary',
+    # site apps
+    'core',
     'valor_records',
 ]
 
