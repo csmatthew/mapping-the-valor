@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
 
@@ -27,16 +26,26 @@ class ValorRecord(models.Model):
     name = models.CharField(max_length=255, unique=True)
     record_type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     deanery = models.ForeignKey(Deanery, on_delete=models.CASCADE)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_valor_records')
-    last_edited_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='edited_valor_records')
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, blank=True
+    )
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, blank=True
+    )
+    created_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='created_valor_records'
+    )
+    last_edited_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='edited_valor_records'
+    )
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        user = kwargs.pop('user', None)  # Retrieve the user from the kwargs and remove it from kwargs
-        if not self.pk:  # If the record is being created
+        user = kwargs.pop('user', None)
+        if not self.pk:
             if user:
                 self.created_by = user
         if user:
