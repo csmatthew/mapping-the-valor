@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block additional_css %}
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Custom Map CSS -->
+    <link rel="stylesheet" href="{% static 'mapper/css/map.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Map</h1>
+<div class="container-fluid pt-5 pb-5 bg-light">
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_scripts %}
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Custom Map JS -->
+    <script src="{% static 'mapper/js/map.js' %}"></script>
+{% endblock %}
