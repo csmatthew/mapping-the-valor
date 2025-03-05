@@ -22,7 +22,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (record.latitude && record.longitude) {
                         L.marker([record.latitude, record.longitude])
                             .addTo(map)
-                            .bindPopup(`<b>${record.name}</b><br>${record.record_type}`);
+                            .bindPopup(
+                                `<b>${record.name}</b><br>
+                                Record Type: ${record.record_type}<br>
+                                Deanery: ${record.deanery}<br>
+                                `
+                            );
                     }
                 });
             })

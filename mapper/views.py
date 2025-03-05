@@ -13,6 +13,7 @@ def valor_records_json(request):
         {
             'name': record.name,
             'record_type': record.record_type,
+            'deanery': record.deanery.deanery_name,
             'latitude': record.latitude,
             'longitude': record.longitude,
         }
