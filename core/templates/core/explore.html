@@ -1,19 +1,8 @@
-<div class="container-fluid pt-5 pb-5 bg-dark">
+<div class="container-fluid pt-5 pb-5 bg-light">
     <div class="row">
         <div class="col-md-6 no-gutters">
-            <div class="card mt-5">
-                <div>
-                    <form>
-                        <div class="form-group">
-                            <label for="search">
-                                <span>Try searching for an entry in the Valor Ecclesiasticus</span>
-                            </label>
-                            <input type="text" class="form-control" id="search" placeholder="Enter search term">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-            </div>
+                <h2>A map of the Valor Ecclesiasticus</h2>
+                <a class="button" href="{% url 'map_view' %}">Explore the map</a>                
         </div>
         <div class="col-md-6">
             <div class="mt-5">
