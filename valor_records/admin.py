@@ -17,7 +17,10 @@ class DeaneryAdmin(admin.ModelAdmin):
 
 
 class ValorRecordAdmin(admin.ModelAdmin):
-    list_display = ('name', 'record_type', 'deanery', 'created_by', 'last_edited_by', 'get_house_type', 'date_created', 'date_updated')
+    list_display = (
+        'name', 'record_type', 'deanery', 'created_by',
+        'last_edited_by', 'get_house_type', 'date_created', 'date_updated'
+    )
     list_filter = ('record_type', 'deanery')
     search_fields = ('name',)
     inlines = [HouseTypeInline]
@@ -25,21 +28,25 @@ class ValorRecordAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not obj.pk:  # If the record is being created
             obj.created_by = request.user
-        obj.last_edited_by = request.user  # Update last_edited_by on every save
+        obj.last_edited_by = request.user
         super().save_model(request, obj, form, change)
 
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)
         for instance in instances:
             if isinstance(instance, HouseType):
-                if form.instance.record_type == ValorRecord.MONASTERY and not instance.house_type:
-                    raise ValidationError('A Monastery must have an associated House type.')
+                if (form.instance.record_type == ValorRecord.MONASTERY and
+                        not instance.house_type):
+                    raise ValidationError(
+                        'A Monastery must have an associated House type.'
+                    )
             instance.save()
         formset.save_m2m()
 
     def get_form(self, request, obj=None, **kwargs):
         """
-        Ensure that the form does not include created_by and last_edited_by as fields in the ValorRecord form.
+        Ensure that the form does not include created_by and last_edited_by
+        as fields in the ValorRecord form.
         """
         form = super().get_form(request, obj, **kwargs)
         if 'created_by' in form.base_fields:
