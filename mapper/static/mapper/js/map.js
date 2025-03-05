@@ -13,5 +13,19 @@ document.addEventListener('DOMContentLoaded', function () {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
+        // Fetch Valor Records and add them to the map
+        fetch('/map/valor-records/')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Valor Records:', data); // Log the data to verify the response
+                data.forEach(record => {
+                    if (record.latitude && record.longitude) {
+                        L.marker([record.latitude, record.longitude])
+                            .addTo(map)
+                            .bindPopup(`<b>${record.name}</b><br>${record.record_type}`);
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching valor records:', error));
     }
 });
