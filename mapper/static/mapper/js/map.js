@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 `<b>${record.name}</b><br>
                                 Record Type: ${record.record_type}<br>
                                 Deanery: ${record.deanery}<br>
+                                House Type: ${record.house_type ? record.house_type : 'N/A'}<br>
                                 `
                             );
                     }
