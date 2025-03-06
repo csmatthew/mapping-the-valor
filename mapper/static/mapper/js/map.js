@@ -20,15 +20,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('Valor Records:', data); // Log the data to verify the response
                 data.forEach(record => {
                     if (record.latitude && record.longitude) {
+                        let name = record.name;
+                        if (record.house_type) {
+                            name += ` ${record.house_type}`;
+                        }
+                        else if (record.record_type !== 'Monastery') {
+                            name += ` ${record.record_type}`;
+                        }
+                        let popupContent = `<b>${name}</b><br>
+                                            Record Type: ${record.record_type}<br>
+                                            Deanery: ${record.deanery}<br>`;
                         L.marker([record.latitude, record.longitude])
                             .addTo(map)
-                            .bindPopup(
-                                `<b>${record.name}</b><br>
-                                Record Type: ${record.record_type}<br>
-                                Deanery: ${record.deanery}<br>
-                                House Type: ${record.house_type ? record.house_type : 'N/A'}<br>
-                                `
-                            );
+                            .bindPopup(popupContent);
                     }
                 });
             })
