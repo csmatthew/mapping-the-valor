@@ -30,9 +30,20 @@ document.addEventListener('DOMContentLoaded', function () {
                         let popupContent = `<b>${name}</b><br>
                                             Record Type: ${record.record_type}<br>
                                             Deanery: ${record.deanery}<br>`;
-                        L.marker([record.latitude, record.longitude])
+                        let marker = L.marker([record.latitude, record.longitude])
                             .addTo(map)
                             .bindPopup(popupContent);
+
+                        // Add click event to zoom in when marker is selected
+                        var isPopupOpen = false;
+                        marker.on('click', function() {
+                            isPopupOpen = true;
+                            marker.openPopup();
+                            map.flyTo([record.latitude, record.longitude], 15, {
+                                animate: true,
+                                duration: 2 // Duration in seconds
+                            }); // Zoom in to the marker location with a smooth transition
+                        });
                     }
                 });
             })
