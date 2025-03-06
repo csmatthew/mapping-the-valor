@@ -14,12 +14,12 @@ class Deanery(models.Model):
 
 class ValorRecord(models.Model):
     MONASTERY = 'Monastery'
-    COLLEGIATE_CHURCH = 'Collegiate Church'
+    COLLEGIATE = 'Collegiate'
     RECTORY = 'Rectory'
 
     TYPE_CHOICES = [
         (MONASTERY, 'Monastery'),
-        (COLLEGIATE_CHURCH, 'Collegiate Church'),
+        (COLLEGIATE, 'Collegiate'),
         (RECTORY, 'Rectory'),
     ]
 
