@@ -23,8 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         let name = record.name;
                         if (record.house_type) {
                             name += ` ${record.house_type}`;
-                        }
-                        else if (record.record_type !== 'Monastery') {
+                        } else if (record.record_type !== 'Monastery') {
                             name += ` ${record.record_type}`;
                         }
                         let popupContent = `<b>${name}</b><br>

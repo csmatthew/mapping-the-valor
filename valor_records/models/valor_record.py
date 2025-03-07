@@ -1,27 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-
-class Deanery(models.Model):
-    deanery_name = models.CharField(max_length=255, unique=True)
-
-    def __str__(self):
-        return self.deanery_name
-
-    class Meta:
-        verbose_name_plural = 'deaneries'
+from .deanery import Deanery
+from .house_type import HouseType
 
 
 class ValorRecord(models.Model):
-    MONASTERY = 'Monastery'
-    COLLEGIATE = 'Collegiate'
-    RECTORY = 'Rectory'
+    TYPE_CHOICES_DICT = {
+        'Monastery': 'Monastery',
+        'Collegiate': 'Collegiate',
+        'Rectory': 'Rectory',
+    }
 
-    TYPE_CHOICES = [
-        (MONASTERY, 'Monastery'),
-        (COLLEGIATE, 'Collegiate'),
-        (RECTORY, 'Rectory'),
-    ]
+    TYPE_CHOICES = [(key, value) for key, value in TYPE_CHOICES_DICT.items()]
 
     name = models.CharField(max_length=255, unique=True)
     record_type = models.CharField(max_length=50, choices=TYPE_CHOICES)
@@ -31,6 +21,10 @@ class ValorRecord(models.Model):
     )
     longitude = models.DecimalField(
         max_digits=9, decimal_places=6, null=True, blank=True
+    )
+    house_type = models.ForeignKey(
+        HouseType, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='valor_records'
     )
     created_by = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True,
@@ -55,21 +49,3 @@ class ValorRecord(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class HouseType(models.Model):
-    ABBEY = 'Abbey'
-    PRIORY = 'Priory'
-    NUNNERY = 'Nunnery'
-
-    HOUSE_TYPE_CHOICES = [
-        (ABBEY, 'Abbey'),
-        (PRIORY, 'Priory'),
-        (NUNNERY, 'Nunnery'),
-    ]
-
-    valor_record = models.OneToOneField(ValorRecord, on_delete=models.CASCADE)
-    house_type = models.CharField(max_length=50, choices=HOUSE_TYPE_CHOICES)
-
-    def __str__(self):
-        return f"{self.valor_record.name} - {self.house_type}"
