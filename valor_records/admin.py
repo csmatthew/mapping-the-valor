@@ -1,14 +1,6 @@
 from django.contrib import admin
-from django.core.exceptions import ValidationError
-from .models import ValorRecord, HouseType, Deanery
-
-
-class HouseTypeInline(admin.StackedInline):
-    model = HouseType
-    can_delete = False
-    verbose_name_plural = 'House Type'
-    extra = 0
-    max_num = 1
+from .models import ValorRecord, Deanery
+from .forms import ValorRecordForm
 
 
 class DeaneryAdmin(admin.ModelAdmin):
@@ -17,31 +9,22 @@ class DeaneryAdmin(admin.ModelAdmin):
 
 
 class ValorRecordAdmin(admin.ModelAdmin):
+    form = ValorRecordForm
     list_display = (
         'name', 'record_type', 'deanery', 'created_by',
         'last_edited_by', 'get_house_type', 'date_created', 'date_updated'
     )
     list_filter = ('record_type', 'deanery')
     search_fields = ('name',)
-    inlines = [HouseTypeInline]
+
+    class Media:
+        js = ('admin/js/valor_record.js',)
 
     def save_model(self, request, obj, form, change):
         if not obj.pk:  # If the record is being created
             obj.created_by = request.user
         obj.last_edited_by = request.user
         super().save_model(request, obj, form, change)
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for instance in instances:
-            if isinstance(instance, HouseType):
-                if (form.instance.record_type == ValorRecord.MONASTERY and
-                        not instance.house_type):
-                    raise ValidationError(
-                        'A Monastery must have an associated House type.'
-                    )
-            instance.save()
-        formset.save_m2m()
 
     def get_form(self, request, obj=None, **kwargs):
         """
