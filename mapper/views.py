@@ -14,11 +14,9 @@ def valor_records_json(request):
             'name': record.name,
             'record_type': record.record_type,
             'house_type': (
-                record.housetype.house_type
-                if hasattr(record, 'housetype')
-                else None
+                record.house_type.house_type if record.house_type else None
             ),
-            'deanery': record.deanery.deanery_name,
+            'deanery': record.deanery.deanery_name if record.deanery else None,
             'latitude': record.latitude,
             'longitude': record.longitude,
         }

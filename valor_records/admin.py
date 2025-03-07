@@ -27,10 +27,6 @@ class ValorRecordAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
     def get_form(self, request, obj=None, **kwargs):
-        """
-        Ensure that the form does not include created_by and last_edited_by
-        as fields in the ValorRecord form.
-        """
         form = super().get_form(request, obj, **kwargs)
         if 'created_by' in form.base_fields:
             del form.base_fields['created_by']
@@ -39,7 +35,7 @@ class ValorRecordAdmin(admin.ModelAdmin):
         return form
 
     def get_house_type(self, obj):
-        return obj.housetype.house_type if hasattr(obj, 'housetype') else None
+        return obj.house_type.house_type if obj.house_type else None
     get_house_type.short_description = 'House Type'
 
 
