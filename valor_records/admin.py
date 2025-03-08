@@ -1,20 +1,16 @@
 from django.contrib import admin
-from .models import ValorRecord, Deanery
+from .models import ValorRecord
 from .forms import ValorRecordForm
-
-
-class DeaneryAdmin(admin.ModelAdmin):
-    def has_module_permission(self, request):
-        return False  # Hides Deanery from the admin sidebar
 
 
 class ValorRecordAdmin(admin.ModelAdmin):
     form = ValorRecordForm
     list_display = (
         'name', 'record_type', 'deanery', 'created_by',
-        'last_edited_by', 'get_house_type', 'date_created', 'date_updated'
+        'last_edited_by', 'get_house_type', 'get_religious_order',
+        'date_created', 'date_updated'
     )
-    list_filter = ('record_type', 'deanery')
+    list_filter = ('record_type', 'deanery', 'religious_order')
     search_fields = ('name',)
 
     class Media:
@@ -35,10 +31,13 @@ class ValorRecordAdmin(admin.ModelAdmin):
         return form
 
     def get_house_type(self, obj):
-        return obj.house_type.house_type if obj.house_type else None
+        return str(obj.house_type) if obj.house_type else None
     get_house_type.short_description = 'House Type'
+
+    def get_religious_order(self, obj):
+        return str(obj.religious_order) if obj.religious_order else None
+    get_religious_order.short_description = 'Religious Order'
 
 
 # Register the models with the custom admin
 admin.site.register(ValorRecord, ValorRecordAdmin)
-admin.site.register(Deanery, DeaneryAdmin)
