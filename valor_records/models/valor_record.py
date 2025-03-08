@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from .deanery import Deanery
 from .house_type import HouseType
+from .religious_order import ReligiousOrder
 
 
 class ValorRecord(models.Model):
@@ -13,19 +14,30 @@ class ValorRecord(models.Model):
 
     TYPE_CHOICES = [(key, value) for key, value in TYPE_CHOICES_DICT.items()]
 
+    # General
     name = models.CharField(max_length=255, unique=True)
     record_type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     deanery = models.ForeignKey(Deanery, on_delete=models.CASCADE)
+
+    # Monastic
+    house_type = models.ForeignKey(
+        HouseType, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='house_records'
+    )
+    religious_order = models.ForeignKey(
+        ReligiousOrder, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='religious_order_records'
+    )
+
+    # Geographical Coordinates
     latitude = models.DecimalField(
         max_digits=9, decimal_places=6, null=True, blank=True
     )
     longitude = models.DecimalField(
         max_digits=9, decimal_places=6, null=True, blank=True
     )
-    house_type = models.ForeignKey(
-        HouseType, on_delete=models.SET_NULL, null=True, blank=True,
-        related_name='valor_records'
-    )
+
+    # User data
     created_by = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True,
         related_name='created_valor_records'

@@ -17,4 +17,4 @@ class HouseType(models.Model):
     )
 
     def __str__(self):
-        return self.house_type
+        return self.get_house_type_display()
