@@ -19,7 +19,7 @@ class ValorRecordForm(forms.ModelForm):
         fields = [
             'name', 'record_type', 'deanery',
             'latitude', 'longitude', 'house_type',
-            'religious_order'
+            'religious_order', 'source_ref_vol', 'source_ref_page'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -27,9 +27,10 @@ class ValorRecordForm(forms.ModelForm):
         if self.instance.pk and self.instance.house_type:
             self.fields['house_type'].initial = self.instance.house_type
         if self.instance.pk and self.instance.religious_order:
-            self.fields['religious_order'].initial = self.instance.religious_order
+            self.fields['religious_order'].initial = \
+                self.instance.religious_order
 
-    def set_field(instance, field_name, value, condition=True):
+    def set_field(self, instance, field_name, value, condition=True):
         setattr(instance, field_name, value if condition else None)
 
     def save(self, commit=True):
@@ -37,8 +38,14 @@ class ValorRecordForm(forms.ModelForm):
         house_type = self.cleaned_data.get('house_type')
         religious_order = self.cleaned_data.get('religious_order')
 
-        self.set_field(instance, 'house_type', house_type, instance.record_type == 'Monastery')
-        self.set_field(instance, 'religious_order', religious_order, instance.record_type == 'Monastery')
+        self.set_field(
+            instance, 'house_type', house_type,
+            instance.record_type == 'Monastery'
+        )
+        self.set_field(
+            instance, 'religious_order', religious_order,
+            instance.record_type == 'Monastery'
+        )
 
         if commit:
             instance.save()
