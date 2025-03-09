@@ -6,9 +6,9 @@ from .forms import ValorRecordForm
 class ValorRecordAdmin(admin.ModelAdmin):
     form = ValorRecordForm
     list_display = (
-        'name', 'record_type', 'deanery', 'created_by',
+        'name', 'record_type', 'deanery',
         'last_edited_by', 'get_house_type', 'get_religious_order',
-        'date_created', 'date_updated'
+        'source_ref_vol', 'source_ref_page'
     )
     list_filter = ('record_type', 'deanery', 'religious_order')
     search_fields = ('name',)

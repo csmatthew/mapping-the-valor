@@ -37,6 +37,10 @@ class ValorRecord(models.Model):
         max_digits=9, decimal_places=6, null=True, blank=True
     )
 
+    # Reference data
+    source_ref_vol = models.IntegerField(null=True, blank=True)
+    source_ref_page = models.IntegerField(null=True, blank=True)
+
     # User data
     created_by = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True,
