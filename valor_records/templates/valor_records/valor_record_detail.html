@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ valor_record.name }}</title>
+</head>
+<body>
+    <h1>
+        {{ valor_record.name }}
+        {% if valor_record.record_type == 'Monastery' and valor_record.house_type %}
+            {{ valor_record.house_type.house_type }}
+        {% else %}
+            {{ valor_record.record_type }}
+        {% endif %}
+    </h1>
+    <p>Type: {{ valor_record.record_type }}</p>
+    <p>Deanery: {{ valor_record.deanery.deanery_name }}</p>
+    {% if valor_record.house_type %}
+        <p>House Type: {{ valor_record.house_type.house_type }}</p>
+    {% endif %}
+    {% if valor_record.religious_order %}
+        <p>Religious Order: {{ valor_record.religious_order.get_religious_order_display }}</p>
+    {% endif %}
+    <p>Latitude: {{ valor_record.latitude }}</p>
+    <p>Longitude: {{ valor_record.longitude }}</p>
+    <p>Source Reference Volume: {{ valor_record.source_ref_vol }}</p>
+    <p>Source Reference Page: {{ valor_record.source_ref_page }}</p>
+    <p>Created By: {{ valor_record.created_by.username }}</p>
+    <p>Last Edited By: {{ valor_record.last_edited_by.username }}</p>
+    <p>Date Created: {{ valor_record.date_created }}</p>
+    <p>Date Updated: {{ valor_record.date_updated }}</p>
+</body>
+</html>
