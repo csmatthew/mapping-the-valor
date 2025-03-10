@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                         let popupContent = `<b>${name}</b><br>
                                             Record Type: ${record.record_type}<br>
-                                            Deanery: ${record.deanery}<br>`;
+                                            Deanery: ${record.deanery}<br>
+                                            <button onclick="window.location.href='/valor-records/${record.slug}/'">View Details</button>`;
                         let marker = L.marker([record.latitude, record.longitude])
                             .addTo(map)
                             .bindPopup(popupContent);
