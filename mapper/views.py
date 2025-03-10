@@ -19,6 +19,7 @@ def valor_records_json(request):
             'deanery': record.deanery.deanery_name if record.deanery else None,
             'latitude': record.latitude,
             'longitude': record.longitude,
+            'slug': record.slug,
         }
         for record in valor_records
     ]
