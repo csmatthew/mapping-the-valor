@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ valor_record.name }}</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
     <h1>
         {{ valor_record.name }}
         {% if valor_record.record_type == 'Monastery' and valor_record.house_type %}
@@ -28,5 +25,4 @@
     <p>Last Edited By: {{ valor_record.last_edited_by.username }}</p>
     <p>Date Created: {{ valor_record.date_created }}</p>
     <p>Date Updated: {{ valor_record.date_updated }}</p>
-</body>
-</html>
+{% endblock %}

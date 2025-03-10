@@ -64,9 +64,10 @@ class ValorRecord(models.Model):
             self.last_edited_by = user
 
         if not self.slug:
-            slug_base = f"{self.name}-"
-            if self.house_type:
-                slug_base += f"{self.house_type.house_type}"
+            if self.record_type == 'Monastery' and self.house_type:
+                slug_base = f"{self.name}-{self.house_type.house_type}"
+            else:
+                slug_base = f"{self.name}-{self.record_type}"
             self.slug = slugify(slug_base)
 
         super().save(*args, **kwargs)
