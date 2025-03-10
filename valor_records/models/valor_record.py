@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 from .deanery import Deanery
 from .house_type import HouseType
 from .religious_order import ReligiousOrder
@@ -16,6 +17,7 @@ class ValorRecord(models.Model):
 
     # General
     name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
     record_type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     deanery = models.ForeignKey(Deanery, on_delete=models.CASCADE)
 
@@ -59,7 +61,13 @@ class ValorRecord(models.Model):
             if user:
                 self.created_by = user
         if user:
-            self.last_edited_by = user  # Update last_edited_by on every save
+            self.last_edited_by = user
+
+        if not self.slug:
+            slug_base = f"{self.name}-"
+            if self.house_type:
+                slug_base += f"{self.house_type.house_type}"
+            self.slug = slugify(slug_base)
 
         super().save(*args, **kwargs)
 
