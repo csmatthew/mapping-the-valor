@@ -57,18 +57,18 @@ class ValorRecord(models.Model):
 
     def save(self, *args, **kwargs):
         user = kwargs.pop('user', None)
-        if not self.pk:
-            if user:
-                self.created_by = user
+        if not self.pk and user:
+            self.created_by = user
         if user:
             self.last_edited_by = user
 
-        if not self.slug:
-            if self.record_type == 'Monastery' and self.house_type:
-                slug_base = f"{self.name}-{self.house_type.house_type}"
-            else:
-                slug_base = f"{self.name}-{self.record_type}"
-            self.slug = slugify(slug_base)
+        # Always regenerate the slug based on the current name and record_type
+        if self.record_type == 'Monastery' and self.house_type:
+            slug_base = f"{self.name}-{self.house_type.house_type}"
+        else:
+            slug_base = f"{self.name}-{self.record_type}"
+        self.slug = slugify(slug_base)
+        print(f"Generated slug: {self.slug}")
 
         super().save(*args, **kwargs)
 
