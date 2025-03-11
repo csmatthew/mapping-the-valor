@@ -17,7 +17,11 @@ class ValorRecordAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('name', 'slug', 'record_type', 'deanery', 'status', 'house_type', 'religious_order', 'latitude', 'longitude', 'source_ref_vol', 'source_ref_page')
+            'fields': (
+                'name', 'slug', 'record_type', 'deanery', 'status',
+                'house_type', 'religious_order', 'latitude', 'longitude',
+                'source_ref_vol', 'source_ref_page'
+            )
         }),
         ('User Information', {
             'fields': ('created_by', 'last_edited_by'),
@@ -37,7 +41,6 @@ class ValorRecordAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
     def get_form(self, request, obj=None, **kwargs):
-        kwargs['user'] = request.user
         form = super().get_form(request, obj, **kwargs)
         if 'created_by' in form.base_fields:
             del form.base_fields['created_by']
@@ -57,7 +60,11 @@ class ValorRecordAdmin(admin.ModelAdmin):
 
     def approve_records(self, request, queryset):
         updated = queryset.update(status='approved')
-        self.message_user(request, f"{updated} record(s) successfully approved.", messages.SUCCESS)
+        self.message_user(
+            request,
+            f"{updated} record(s) successfully approved.",
+            messages.SUCCESS
+        )
     approve_records.short_description = "Approve selected records"
 
 

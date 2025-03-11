@@ -7,8 +7,24 @@ from .views import (
 )
 
 urlpatterns = [
-    path('<slug:slug>/', valor_record_detail, name='valor_record_detail'),
-    path('create/', ValorRecordCreateView.as_view(), name='valor_record_create'),
-    path('<slug:slug>/update/', ValorRecordUpdateView.as_view(), name='valor_record_update'),
-    path('<slug:slug>/delete/', ValorRecordDeleteView.as_view(), name='valor_record_delete'),
+    path(
+        '<slug:slug>/',
+        valor_record_detail,
+        name='valor_record_detail'
+    ),
+    path(
+        'create/',
+        ValorRecordCreateView.as_view(),
+        name='valor_record_create'
+    ),
+    path(
+        '<slug:slug>/update/',
+        ValorRecordUpdateView.as_view(),
+        name='valor_record_update'
+    ),
+    path(
+        '<slug:slug>/delete/',
+        ValorRecordDeleteView.as_view(),
+        name='valor_record_delete'
+    ),
 ]

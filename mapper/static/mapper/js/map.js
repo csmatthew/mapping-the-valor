@@ -47,6 +47,24 @@ document.addEventListener('DOMContentLoaded', function () {
                                 duration: 2 // Duration in seconds
                             }); // Zoom in to the marker location with a smooth transition
                         });
+
+                        // Handle marker hover events
+                        marker.on('mouseover', function() {
+                            if (!isPopupOpen) {
+                                marker.openPopup();
+                            }
+                        });
+
+                        marker.on('mouseout', function() {
+                            if (!isPopupOpen) {
+                                marker.closePopup();
+                            }
+                        });
+
+                        map.on('click', function() {
+                            isPopupOpen = false;
+                            marker.closePopup();
+                        });
                     }
                 });
             })
