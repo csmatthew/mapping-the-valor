@@ -8,7 +8,7 @@ def map_view(request):
 
 
 def valor_records_json(request):
-    valor_records = ValorRecord.objects.all()
+    valor_records = ValorRecord.objects.filter(status='approved')
     data = [
         {
             'name': record.name,

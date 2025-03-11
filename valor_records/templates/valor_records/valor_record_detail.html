@@ -25,4 +25,9 @@
     <p>Last Edited By: {{ valor_record.last_edited_by.username }}</p>
     <p>Date Created: {{ valor_record.date_created }}</p>
     <p>Date Updated: {{ valor_record.date_updated }}</p>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'valor_record_update' valor_record.slug %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'valor_record_delete' valor_record.slug %}" class="btn btn-danger">Delete</a>
+    {% endif %}
 {% endblock %}

@@ -17,18 +17,21 @@ class ValorRecordForm(forms.ModelForm):
     class Meta:
         model = ValorRecord
         fields = [
-            'name', 'record_type', 'deanery',
-            'latitude', 'longitude', 'house_type',
-            'religious_order', 'source_ref_vol', 'source_ref_page'
+            'name', 'record_type', 'deanery', 'status', 'house_type',
+            'religious_order', 'latitude', 'longitude', 'source_ref_vol', 'source_ref_page'
         ]
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if self.instance.pk and self.instance.house_type:
             self.fields['house_type'].initial = self.instance.house_type
         if self.instance.pk and self.instance.religious_order:
             self.fields['religious_order'].initial = \
                 self.instance.religious_order
+
+        if user and not user.is_superuser:
+            self.fields['status'].disabled = True
 
     def set_field(self, instance, field_name, value, condition=True):
         setattr(instance, field_name, value if condition else None)
