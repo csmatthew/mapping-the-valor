@@ -18,7 +18,8 @@ class ValorRecordForm(forms.ModelForm):
         model = ValorRecord
         fields = [
             'name', 'record_type', 'deanery', 'status', 'house_type',
-            'religious_order', 'latitude', 'longitude', 'source_ref_vol', 'source_ref_page'
+            'religious_order', 'latitude', 'longitude', 'source_ref_vol',
+            'source_ref_page'
         ]
 
     def __init__(self, *args, **kwargs):
