@@ -28,8 +28,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                         let popupContent = `<b>${name}</b><br>
                                             Record Type: ${record.record_type}<br>
-                                            Deanery: ${record.deanery}<br>
-                                            <button onclick="window.location.href='/valor-records/${record.slug}/'">View Details</button>`;
+                                            Deanery: ${record.deanery}<br>`;
+                        if (record.religious_order) {
+                            popupContent += `Religious Order: ${record.religious_order}<br>`;
+                        }
+                        popupContent += `<button onclick="window.location.href='/valor-records/${record.slug}/'">View Details</button>`;
                         let marker = L.marker([record.latitude, record.longitude])
                             .addTo(map)
                             .bindPopup(popupContent);
