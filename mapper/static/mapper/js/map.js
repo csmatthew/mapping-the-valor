@@ -5,7 +5,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var mapContainer = document.getElementById('map');
 
     if (mapContainer && !mapContainer._leaflet_map) {
-        var map = L.map('map').setView([54.5, -3], 6); // Centered on Britain
+        var map = L.map('map', {
+            center: [54.5, -3], // Centered on Britain
+            zoom: 6,
+            minZoom: 6, // Prevent zooming out further than zoom level 6
+            maxBounds: [
+                [49.5, -10.5], // Southwest corner
+                [59, 2]       // Northeast corner
+            ],
+            maxBoundsViscosity: 1.0 // Ensures the map is completely restricted to the bounds
+        });
         mapContainer._leaflet_map = map;
         console.log('Map initialized:', map);
 

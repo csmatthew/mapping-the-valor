@@ -15,3 +15,8 @@
     left: 0.625rem;
     top: 0.625rem;
 }
+
+.leaflet-control-container .leaflet-bottom.leaflet-right {
+    bottom: 10px;
+    right: 10px;
+}

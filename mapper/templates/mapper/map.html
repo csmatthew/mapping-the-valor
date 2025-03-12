@@ -3,8 +3,9 @@
 
 {% block additional_css %}
     <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <!-- Custom Map CSS -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" /> -->
+    <link rel="stylesheet" href="{% static 'mapper/css/custom_leaflet.css' %}">
+    <!-- Custom Map CSS --> 
     <link rel="stylesheet" href="{% static 'mapper/css/map.css' %}">
 {% endblock %}
 
