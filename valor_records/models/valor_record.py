@@ -22,7 +22,7 @@ class ValorRecord(models.Model):
     ]
 
     # General
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=True, db_index=True)
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
     record_type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     deanery = models.ForeignKey(Deanery, on_delete=models.CASCADE)
