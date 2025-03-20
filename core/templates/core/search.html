@@ -1,15 +1,14 @@
-<!-- unused since restructure 12/03/25 -->
 <div class="container-fluid pt-5 pb-5 bg-dark">
     <div class="row">
         <div class="col-md-6">
             <div class="card mt-5">
                 <div>
-                    <form>
+                    <form action="{% url 'search' %}" method="get">
                         <div class="form-group">
                             <label for="search">
                                 <span>Try searching for an entry in the Valor Ecclesiasticus</span>
                             </label>
-                            <input type="text" class="form-control" id="search" placeholder="Enter search term">
+                            <input type="text" class="form-control" id="search" name="search" placeholder="Enter search term">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (mapContainer && !mapContainer._leaflet_map) {
         var map = L.map('map', {
-            center: [54.5, -3], // Centered on Britain
-            zoom: 6,
+            center: [53.5, -2.25], // Centered on Manchester
+            zoom: 10,
             minZoom: 6, // Prevent zooming out further than zoom level 6
             maxBounds: [
                 [49.5, -10.5], // Southwest corner
