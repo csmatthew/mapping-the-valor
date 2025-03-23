@@ -2,16 +2,17 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
-from .models import ValorRecord
+from .models import ValorRecord, ValorText
 from .forms import ValorRecordForm
 
 
 def valor_record_detail(request, slug):
     valor_record = get_object_or_404(ValorRecord, slug=slug, status='approved')
+    valor_texts = ValorText.objects.filter(valor_record=valor_record)
     return render(
         request,
         'valor_records/valor_record_detail.html',
-        {'valor_record': valor_record}
+        {'valor_record': valor_record, 'valor_texts': valor_texts}
     )
 
 
