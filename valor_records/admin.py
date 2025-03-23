@@ -1,7 +1,26 @@
-from django.contrib import admin
-from django.contrib import messages
-from .models import ValorRecord
+from django.contrib import admin, messages
+from django_summernote.widgets import SummernoteWidget
+from django.db import models
+from .models import ValorRecord, ValorText
 from .forms import ValorRecordForm
+
+
+class ValorTextInline(admin.TabularInline):
+    model = ValorText
+    extra = 0
+    fields = ('original_text', 'translation', 'created_by', 'date_created')
+    readonly_fields = ('created_by', 'date_created')
+    formfield_overrides = {
+        models.TextField: {'widget': SummernoteWidget()},
+    }
+
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+        for instance in instances:
+            if not instance.pk:
+                instance.created_by = request.user
+            instance.save()
+        formset.save_m2m()
 
 
 class ValorRecordAdmin(admin.ModelAdmin):
@@ -14,6 +33,7 @@ class ValorRecordAdmin(admin.ModelAdmin):
     list_filter = ('record_type', 'deanery', 'religious_order', 'status')
     search_fields = ('name',)
     actions = ['approve_records']
+    inlines = [ValorTextInline]
 
     fieldsets = (
         (None, {

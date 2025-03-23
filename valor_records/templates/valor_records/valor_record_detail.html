@@ -89,12 +89,44 @@
                     </tbody>
                 </table>
                 {% if user.is_authenticated %}
-                <button id="toggle-button" class="btn btn-primary">Show More</button>
+                <button id="toggle-button" class="btn btn-primary" aria-expanded="false" aria-controls="hidden-rows">
+                    Show More
+                </button>
                 {% endif %}
             </article>
         </div>
     </div>
 
+    <div class="container mt-4">
+        <h3>Valor Texts</h3>
+        {% if valor_texts %}
+            {% for text in valor_texts %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Original Text</h5>
+                    <p class="card-text">{{ text.original_text|safe }}</p>
+                    {% if text.translation %}
+                    <h5 class="card-title">Translation</h5>
+                    <p class="card-text">{{ text.translation|safe }}</p>
+                    {% endif %}
+                    <p class="card-text">
+                        <small class="text-muted">
+                            {% if text.created_by %}
+                                Created by {{ text.created_by.username }}
+                            {% else %}
+                                Creator unknown
+                            {% endif %}
+                            on {{ text.date_created }}
+                        </small>
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No associated texts found for this record.</p>
+        {% endif %}
+    </div>
+    
 
     {% if user.is_authenticated %}
     <a href="{% url 'valor_record_update' valor_record.slug %}" class="btn btn-primary">Edit</a>
