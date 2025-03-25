@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (mapContainer && !mapContainer._leaflet_map) {
         var map = L.map('map', {
             center: [53.5, -2.25], // Centered on Manchester
-            zoom: 10,
+            zoom: 10, // Set initial zoom level to 10 for a more zoomed-in view
             minZoom: 6, // Prevent zooming out further than zoom level 6
             maxBounds: [
                 [49.5, -10.5], // Southwest corner
@@ -41,37 +41,32 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (record.religious_order) {
                             popupContent += `Religious Order: ${record.religious_order}<br>`;
                         }
-                        popupContent += `<button onclick="window.location.href='/valor-records/${record.slug}/'">View Details</button>`;
                         let marker = L.marker([record.latitude, record.longitude])
                             .addTo(map)
                             .bindPopup(popupContent);
 
-                        // Add click event to zoom in when marker is selected
-                        var isPopupOpen = false;
+                        // Add click event to show modal when marker is selected
                         marker.on('click', function() {
-                            isPopupOpen = true;
-                            marker.openPopup();
-                            map.flyTo([record.latitude, record.longitude], 15, {
-                                animate: true,
-                                duration: 2 // Duration in seconds
-                            }); // Zoom in to the marker location with a smooth transition
+                            // Fetch the record details using the record slug
+                            fetch(`/valor-records/${record.slug}/modal/`)
+                                .then(response => response.text())
+                                .then(html => {
+                                    // Populate the modal content
+                                    var modalContent = document.getElementById('modal-content');
+                                    modalContent.innerHTML = html;
+                                    // Show the modal
+                                    var viewCardModal = new bootstrap.Modal(document.getElementById('viewCardModal'));
+                                    viewCardModal.show();
+                                })
+                                .catch(error => console.error('Error fetching record details:', error));
                         });
 
                         // Handle marker hover events
                         marker.on('mouseover', function() {
-                            if (!isPopupOpen) {
-                                marker.openPopup();
-                            }
+                            marker.openPopup();
                         });
 
                         marker.on('mouseout', function() {
-                            if (!isPopupOpen) {
-                                marker.closePopup();
-                            }
-                        });
-
-                        map.on('click', function() {
-                            isPopupOpen = false;
                             marker.closePopup();
                         });
                     }
