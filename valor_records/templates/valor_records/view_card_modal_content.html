@@ -1,9 +1,13 @@
-<!-- filepath: c:\Users\Ixthu\Documents\Coding\vscode-projects\mapping-the-valor\valor_records\templates\valor_records\view_card_modal_content.html -->
+{% load custom_filters %}
+
+<button class="btn btn-link" aria-label="View details of valor record" onclick="window.location.href='{% url 'valor_record_detail' valor_record.slug %}'">
+    View detailed record for {{ valor_record.slug|slug_to_title }} <i class="fa fa-link"></i>
+</button>
+
 <div class="col-12 col-lg">
     <article class="record">
         <table class="table table-bordered table-striped">
             <tbody>
-                <!-- Always visible rows -->
                 <tr>
                     <th>Record Name</th>
                     <td>
@@ -48,28 +52,8 @@
                     <td>{{ valor_record.longitude }}</td>
                 </tr>
                 <tr>
-                    <th>Source Ref. Vol.</th>
-                    <td>{{ valor_record.source_ref_vol }}</td>
-                </tr>
-                <tr>
-                    <th>Source Ref. Page</th>
-                    <td>{{ valor_record.source_ref_page }}</td>
-                </tr>
-                <tr>
-                    <th>Created By</th>
-                    <td>{{ valor_record.created_by.username }}</td>
-                </tr>
-                <tr>
-                    <th>Last Edited By</th>
-                    <td>{{ valor_record.last_edited_by.username }}</td>
-                </tr>
-                <tr>
-                    <th>Date Created</th>
-                    <td>{{ valor_record.date_created }}</td>
-                </tr>
-                <tr>
-                    <th>Date Updated</th>
-                    <td>{{ valor_record.date_updated }}</td>
+                    <th>Source Reference</th>
+                    <td>vol. {{ valor_record.source_ref_vol }} p. {{ valor_record.source_ref_page }}</td>
                 </tr>
             </tbody>
         </table>
