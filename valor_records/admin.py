@@ -27,7 +27,8 @@ class ValorRecordAdmin(admin.ModelAdmin):
     form = ValorRecordForm
     list_display = (
         'name', 'slug', 'record_type', 'deanery',
-        'status', 'last_edited_by', 'get_house_type', 'get_religious_order',
+        'status', 'last_edited_by',
+        'get_house_type', 'get_religious_order',
         'source_ref_vol', 'source_ref_page'
     )
     list_filter = ('record_type', 'deanery', 'religious_order', 'status')
@@ -39,7 +40,8 @@ class ValorRecordAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 'name', 'slug', 'record_type', 'deanery', 'status',
-                'house_type', 'religious_order', 'latitude', 'longitude',
+                'dedication', 'house_type', 'religious_order',
+                'latitude', 'longitude',
                 'source_ref_vol', 'source_ref_page'
             )
         }),
