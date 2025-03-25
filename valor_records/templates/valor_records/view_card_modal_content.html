@@ -1,0 +1,77 @@
+<!-- filepath: c:\Users\Ixthu\Documents\Coding\vscode-projects\mapping-the-valor\valor_records\templates\valor_records\view_card_modal_content.html -->
+<div class="col-12 col-lg">
+    <article class="record">
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <!-- Always visible rows -->
+                <tr>
+                    <th>Record Name</th>
+                    <td>
+                        {{ valor_record.name }}
+                        {% if valor_record.record_type == 'Monastery' and valor_record.house_type %}
+                        {{ valor_record.house_type.house_type }}
+                        {% else %}
+                        {{ valor_record.record_type }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Record Type</th>
+                    <td>{{ valor_record.record_type }}</td>
+                </tr>
+                <tr>
+                    <th>Dedication</th>
+                    <td>{{ valor_record.dedication }}</td>
+                </tr>
+                <tr>
+                    <th>Deanery</th>
+                    <td>{{ valor_record.deanery.deanery_name }}</td>
+                </tr>
+                {% if valor_record.house_type %}
+                <tr>
+                    <th>House Type</th>
+                    <td>{{ valor_record.house_type.house_type }}</td>
+                </tr>
+                {% endif %}
+                {% if valor_record.religious_order %}
+                <tr>
+                    <th>Religious Order</th>
+                    <td>{{ valor_record.religious_order.get_religious_order_display }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th>Latitude</th>
+                    <td>{{ valor_record.latitude }}</td>
+                </tr>
+                <tr>
+                    <th>Longitude</th>
+                    <td>{{ valor_record.longitude }}</td>
+                </tr>
+                <tr>
+                    <th>Source Ref. Vol.</th>
+                    <td>{{ valor_record.source_ref_vol }}</td>
+                </tr>
+                <tr>
+                    <th>Source Ref. Page</th>
+                    <td>{{ valor_record.source_ref_page }}</td>
+                </tr>
+                <tr>
+                    <th>Created By</th>
+                    <td>{{ valor_record.created_by.username }}</td>
+                </tr>
+                <tr>
+                    <th>Last Edited By</th>
+                    <td>{{ valor_record.last_edited_by.username }}</td>
+                </tr>
+                <tr>
+                    <th>Date Created</th>
+                    <td>{{ valor_record.date_created }}</td>
+                </tr>
+                <tr>
+                    <th>Date Updated</th>
+                    <td>{{ valor_record.date_updated }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+</div>
