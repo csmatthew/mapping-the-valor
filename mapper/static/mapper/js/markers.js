@@ -46,6 +46,9 @@ const icons = {
     })
 };
 
+// Store markers in a dictionary
+const markers = {};
+
 // Function to create markers
 function createMarkers(map, data) {
     data.forEach(record => {
@@ -69,8 +72,13 @@ function createMarkers(map, data) {
             let marker = L.marker([record.latitude, record.longitude], {
                     icon: markerIcon
                 })
-                .addTo(map)
                 .bindPopup(popupContent);
+
+            // Store marker in the dictionary
+            if (!markers[record.record_type]) {
+                markers[record.record_type] = [];
+            }
+            markers[record.record_type].push(marker);
 
             // Add click event to show modal when marker is selected
             marker.on('click', function () {
@@ -99,3 +107,21 @@ function createMarkers(map, data) {
         }
     });
 }
+
+// Function to filter markers
+function filterMarkers() {
+    const checkboxes = document.querySelectorAll('.record-type-filter');
+    checkboxes.forEach(checkbox => {
+        const recordType = checkbox.value;
+        if (checkbox.checked) {
+            markers[recordType].forEach(marker => marker.addTo(map));
+        } else {
+            markers[recordType].forEach(marker => marker.remove());
+        }
+    });
+}
+
+// Add event listeners to checkboxes
+document.querySelectorAll('.record-type-filter').forEach(checkbox => {
+    checkbox.addEventListener('change', filterMarkers);
+});
