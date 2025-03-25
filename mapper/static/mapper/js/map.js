@@ -27,50 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 console.log('Valor Records:', data); // Log the data to verify the response
-                data.forEach(record => {
-                    if (record.latitude && record.longitude) {
-                        let name = record.name;
-                        if (record.house_type) {
-                            name += ` ${record.house_type}`;
-                        } else if (record.record_type !== 'Monastery') {
-                            name += ` ${record.record_type}`;
-                        }
-                        let popupContent = `<b>${name}</b><br>
-                                            Record Type: ${record.record_type}<br>
-                                            Deanery: ${record.deanery}<br>`;
-                        if (record.religious_order) {
-                            popupContent += `Religious Order: ${record.religious_order}<br>`;
-                        }
-                        let marker = L.marker([record.latitude, record.longitude])
-                            .addTo(map)
-                            .bindPopup(popupContent);
-
-                        // Add click event to show modal when marker is selected
-                        marker.on('click', function() {
-                            // Fetch the record details using the record slug
-                            fetch(`/valor-records/${record.slug}/modal/`)
-                                .then(response => response.text())
-                                .then(html => {
-                                    // Populate the modal content
-                                    var modalContent = document.getElementById('modal-content');
-                                    modalContent.innerHTML = html;
-                                    // Show the modal
-                                    var viewCardModal = new bootstrap.Modal(document.getElementById('viewCardModal'));
-                                    viewCardModal.show();
-                                })
-                                .catch(error => console.error('Error fetching record details:', error));
-                        });
-
-                        // Handle marker hover events
-                        marker.on('mouseover', function() {
-                            marker.openPopup();
-                        });
-
-                        marker.on('mouseout', function() {
-                            marker.closePopup();
-                        });
-                    }
-                });
+                createMarkers(map, data); // Use the createMarkers function from markers.js
             })
             .catch(error => console.error('Error fetching valor records:', error));
     }
